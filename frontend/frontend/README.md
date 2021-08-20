@@ -1,5 +1,6 @@
 # Getting Started with Create React App
-
+*{this.state.con === 'Success' ?<Pagexristi/>:<App/>}*/
+/*{this.state.con === 'UnknownUser' ?this.state.con === 'Admin' ?<admin/>:<user/>:<App/>}*/
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

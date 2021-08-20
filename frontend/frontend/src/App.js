@@ -1,12 +1,15 @@
 import React from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './App.css';
+const url = "http://127.0.0.1:3000/api/app";
 class  App extends React.Component {
   constructor(props) {
     super(props);
      this.state = {
       email: " ",
-      Password: " "
+      Password: " ",
+      con: " ",
     };
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
@@ -18,12 +21,29 @@ class  App extends React.Component {
    this.setState({Password: e.target.value});
   }
   handleClickSignIn(){
-    
+    axios.post(url,{
+      email: this.state.email,
+      Password: this.state.Password,
+      }).then(response => {
+      response.json().then(data => {
+        if(data.result === 'User'){
+          this.setState({con: 'User'});
+        }
+        if(data.result === 'Admin'){
+          this.setState({con: 'Admin'});
+        }
+        console.log(data.result);
+      })
+    })
+    .catch(function (error) {
+      this.setState({con: 'UnknownUser'});
+      console.log(error);
+    });
   }
   render(){
   return (
     <div>
-      <h1>Professional Νetworking</h1>
+      <h1>Welcome to Professional Νetworking</h1>
       <div class="topnav">
         <div class="right">
           <Link to="/Register">Sign up</Link>

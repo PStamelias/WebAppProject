@@ -12,7 +12,8 @@ class  Register extends React.Component{
       Surname: "",
       Phone: " ",
       Password: " ",
-      PasswordAgain: " "
+      PasswordAgain: " ",
+      con: " ",
     };
     this.handleEmail = this.handleEmail.bind(this);
     this.handleName = this.handleName.bind(this);
@@ -41,7 +42,7 @@ class  Register extends React.Component{
    this.setState({PasswordAgain: e.target.value});
   }
   handleClick = () => {
-    /*axios.post(url,{
+    axios.post(url,{
       Name: this.state.Name,
       Surname: this.state.Surname,
       Email: this.state.email,
@@ -50,11 +51,11 @@ class  Register extends React.Component{
       PasswordAgain: this.state.PasswordAgain
     })
     .then(function (response) {
-      console.log(response);
+      this.setState({con:'Success'});
     })
     .catch(function (error) {
-      console.log(error);
-    });*/
+       this.setState({con:'Error'});
+    });
   }
   render() {
     return (
