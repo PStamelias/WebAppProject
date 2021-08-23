@@ -47,6 +47,7 @@ class  Register extends React.Component{
       Name: this.state.Name,
       Surname: this.state.Surname,
       Email: this.state.email,
+      Image: this.state.selectedFile,
       Phone: this.state.Phone,
       Password: this.state.Password,
       PasswordAgain: this.state.PasswordAgain
@@ -83,7 +84,6 @@ class  Register extends React.Component{
     
       // Request made to the backend api
       // Send formData object
-      axios.post("api/uploadfile", formData);
     };
     
     // File content to be displayed after
