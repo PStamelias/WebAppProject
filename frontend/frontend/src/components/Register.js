@@ -2,7 +2,7 @@ import React from 'react';
 import './Register.css';
 import axios from 'axios';
 import Photo from './Photo.js';
-const url = "http://127.0.0.1:3000/api/register";
+const url = "http://127.0.0.1:8000/api/register";
 class  Register extends React.Component{
    constructor(props) {
     super(props);
@@ -10,6 +10,7 @@ class  Register extends React.Component{
       email: " ",
       Name: " ",
       Surname: "",
+      selectedFile: null,
       Phone: " ",
       Password: " ",
       PasswordAgain: " ",
@@ -57,6 +58,65 @@ class  Register extends React.Component{
        this.setState({con:'Error'});
     });
   }
+   onFileChange = event => {
+    
+      // Update the state
+      this.setState({ selectedFile: event.target.files[0] });
+    
+    };
+    
+    // On file upload (click the upload button)
+    onFileUpload = () => {
+    
+      // Create an object of formData
+      const formData = new FormData();
+    
+      // Update the formData object
+      formData.append(
+        "myFile",
+        this.state.selectedFile,
+        this.state.selectedFile.name
+      );
+    
+      // Details of the uploaded file
+      console.log(this.state.selectedFile);
+    
+      // Request made to the backend api
+      // Send formData object
+      axios.post("api/uploadfile", formData);
+    };
+    
+    // File content to be displayed after
+    // file upload is complete
+    fileData = () => {
+    
+      if (this.state.selectedFile) {
+         
+        return (
+          <div>
+            <h2>File Details:</h2>
+             
+<p>File Name: {this.state.selectedFile.name}</p>
+ 
+             
+<p>File Type: {this.state.selectedFile.type}</p>
+ 
+             
+<p>
+              Last Modified:{" "}
+              {this.state.selectedFile.lastModifiedDate.toDateString()}
+            </p>
+ 
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <br />
+          </div>
+        );
+      }
+    };
   render() {
     return (
     <div>
@@ -74,7 +134,16 @@ class  Register extends React.Component{
       <input  type="text" id="Password" name="Password" defaultValue={this.state.Password} onChange={this.handlePassword} size="60"/><br/>
       <label>Password_Again:</label><br/>
       <input  type="text" id="Password_Again" name="Password_Again" defaultValue={this.state.PasswordAgain} onChange={this.state.handlePasswordAgain} size="60"/><br/>
-      <Photo/>
+      <div>
+            <label>Image</label><br/>
+            <div>
+                <input type="file" onChange={this.onFileChange} /><br/><br/>
+                <button onClick={this.onFileUpload}>
+                  Upload!
+                </button>
+            </div>
+          {this.fileData()}
+        </div>
       <br/>
       <br/>
       <button onClick={this.handleClick}>

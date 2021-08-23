@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './App.css';
-const url = "http://127.0.0.1:3000/api/app";
+const url = "http://127.0.0.1:8000/api/app";
 class  App extends React.Component {
   constructor(props) {
     super(props);
