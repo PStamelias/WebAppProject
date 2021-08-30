@@ -4,12 +4,12 @@ alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 
 # Create your models here.
 class user(models.Model):
-	Name                    = models.CharField(max_length=240)
-	Surname       			= models.CharField(max_length=240)
+	Name                    = models.CharField(max_length=240,null=True)
+	Surname       			= models.CharField(max_length=240,null=True)
 	Email_Address 			= models.EmailField(max_length=240,unique=True)
-	Image         			= models.ImageField()
-	Phone_Number  			= models.PositiveIntegerField()
+	Image         			= models.ImageField(null=True)
+	Phone_Number  			= models.PositiveIntegerField(null=True)
 	Password          		= models.CharField(max_length=240,validators=[alphanumeric])
-	Biography     			= models.TextField()
-	Professional_Experience = models.TextField()
-	Notes_of_Interest 		= models.TextField()
+	Biography     			= models.TextField(null=True)
+	Professional_Experience = models.TextField(null=True)
+	Notes_of_Interest 		= models.TextField(null=True)
