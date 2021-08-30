@@ -27,13 +27,10 @@ class Login(APIView):
 			return Response("Admin")
 		else:
 			val1=serializer.check_user(request.data)
-		#myuser = user.objects.filter(Email_Address=Email).first()
-		#if myuser is None:
-		#	val=check_suseruser(Email)
-		#	if(val==False)
-		#		raise AuthenticationFailed('User not found!')	
-		#	else:
-		#		Response("Admin")
+			if(val1==True):
+				return Response("User")
+			else:
+				raise AuthenticationFailed('User not found!')
 		return Response("data")
 
 

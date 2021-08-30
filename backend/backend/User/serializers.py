@@ -7,6 +7,8 @@ class UserSerializer(serializers.ModelSerializer):
         model  = user
         fields = '__all__'
 
+    def get_passwd(self):
+        return self.Password
 
     def validate(self, value):
         superusers = User.objects.filter(is_superuser=True).values_list('email')
@@ -48,11 +50,12 @@ class UserSerializer(serializers.ModelSerializer):
         Password=value['Password']
         Email=value['Email_Address']
         if user.objects.filter(Email_Address=Email).exists():
-            myuser = user.objects.filter(Email_Address=Email).first()
-            if not myuser.check_password(Password):
-                print('lathos kwdikos')
-            print('iparxei')
-            return True
+            myuser = user.objects.filter(Email_Address=Email)
+            user1 = myuser.filter(Password=Password)
+            if user1:
+                return True
+            else:
+                return False
         else:
             return False
         return False
