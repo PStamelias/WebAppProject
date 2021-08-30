@@ -9,7 +9,7 @@ class user(models.Model):
 	Email_Address 			= models.EmailField(max_length=240,unique=True)
 	Image         			= models.ImageField()
 	Phone_Number  			= models.PositiveIntegerField()
-	Code          			= models.CharField(max_length=240,validators=[alphanumeric])
+	Password          		= models.CharField(max_length=240,validators=[alphanumeric])
 	Biography     			= models.TextField()
 	Professional_Experience = models.TextField()
 	Notes_of_Interest 		= models.TextField()

@@ -1,20 +1,18 @@
 import React from 'react';
 import './Register.css';
 import axios from 'axios';
-import Photo from './Photo.js';
-const url = "http://127.0.0.1:8000/api/register";
 class  Register extends React.Component{
    constructor(props) {
     super(props);
      this.state = {
-      email: " ",
-      Name: " ",
+      email: "",
+      Name: "",
       Surname: "",
       selectedFile: null,
-      Phone: " ",
-      Password: " ",
-      PasswordAgain: " ",
-      con: " ",
+      Phone: "",
+      Password: "",
+      PasswordAgain: "",
+      val1:true,
     };
     this.handleEmail = this.handleEmail.bind(this);
     this.handleName = this.handleName.bind(this);
@@ -23,6 +21,11 @@ class  Register extends React.Component{
     this.handlePassword = this.handlePassword.bind(this);
     this.handlePasswordAgain = this.handlePasswordAgain.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.checkTypes= this.checkTypes.bind(this);
+    this.onFileChange=this.onFileChange.bind(this);
+    this.doneee=this.doneee.bind(this);
+    this.onFileUpload=this.onFileUpload.bind(this);
+    this.fileData=this.fileData.bind(this);
   }
   handleEmail(e) {
    this.setState({email: e.target.value});
@@ -42,22 +45,89 @@ class  Register extends React.Component{
   handlePasswordAgain(e) {
    this.setState({PasswordAgain: e.target.value});
   }
+  checkTypes = () => {
+    if(this.state.email !== null && this.state.email !== '') {
+      this.state.val1=true;
+    }
+    else{
+      alert('Empty email')
+      this.state.val1=false;
+    }
+
+    if(this.state.Name !== null && this.state.Name !== '') {
+      this.state.val1=true;
+    }
+    else{
+      alert('Empty Name')
+      this.state.val1=false;
+    }
+
+    if(this.state.Surname !== null && this.state.Surname !== '') {
+      this.state.val1=true;
+    }
+    else{
+      alert('Empty Surname')
+      this.state.val1=false;
+    }
+
+    if(this.state.Phone !== null && this.state.Phone !== '') {
+     this.state.val1=true;
+    }
+    else{
+      alert('Empty Phone')
+      this.state.val1=false;
+    }
+
+    if(this.state.Password !== null && this.state.Password !== '') {
+      this.state.val1=true;
+    }
+    else{
+      alert('Empty Password')
+      this.state.val1=false;
+    }
+
+    if(this.state.PasswordAgain !== null && this.state.PasswordAgain !== '') {
+      this.state.val1=true;
+    }
+    else{
+      alert(this.state.PasswordAgain)
+      alert('Empty PasswordAgain')
+      this.state.val1=false;
+    }
+
+    if(this.state.PasswordAgain!==this.state.Password){
+      alert('Error:Password must be the same between the fields')
+      this.state.val1=false;
+    }
+
+  }
+  doneee = event => {
+      event.preventDefault()
+      this.checkTypes()
+      if(this.state.val1==true){
+        this.handleClick()
+      }
+      else{
+        this.props.history.push("/");
+      }
+    }
   handleClick = () => {
-    axios.post(url,{
-      Name: this.state.Name,
-      Surname: this.state.Surname,
-      Email: this.state.email,
-      Image: this.state.selectedFile,
-      Phone: this.state.Phone,
-      Password: this.state.Password,
-      PasswordAgain: this.state.PasswordAgain
+    const formData = new FormData();
+    formData.append('email',this.state.email);
+    formData.append('Name',this.state.Name);
+    formData.append('Surname',this.state.Surname);
+    formData.append('Phone',this.state.Phone);
+    formData.append('Password',this.state.Password);
+    formData.append('PasswordAgain',this.state.PasswordAgain);
+    formData.append('Image', this.state.selectedFile)
+    axios.post('http://127.0.0.1:8000/users/userList/', formData, {headers: {'Content-Type': 'application/json'}})
+    .then(response => {
+      alert('You have successfully registered! Log in now to use the application');
+    }).catch(error => {
+      alert('Error:Email Address already in use');
+    }).finally(() => { //Redirecting to the home page.
+      this.props.history.push("/");
     })
-    .then(function (response) {
-      this.setState({con:'Success'});
-    })
-    .catch(function (error) {
-       this.setState({con:'Error'});
-    });
   }
    onFileChange = event => {
     
@@ -121,7 +191,7 @@ class  Register extends React.Component{
     return (
     <div>
     <h1>Register Page</h1>
-    <form>
+    <form onSubmit={this.doneee}>
       <label>Name:</label><br/>
       <input  type="text" id="Name" name="Name" defaultValue={this.state.Name}  onChange={this.handleName} size="60"/><br/>
       <label>Surname:</label><br/>
@@ -131,9 +201,9 @@ class  Register extends React.Component{
       <label>Phone_Number:</label><br/>
       <input  type="text" id="Phone_Number" name="Phone_Number" defaultValue={this.state.Phone} onChange={this.handlePhone} size="60"/><br/>
       <label>Password:</label><br/>
-      <input  type="text" id="Password" name="Password" defaultValue={this.state.Password} onChange={this.handlePassword} size="60"/><br/>
+      <input  type="password" id="Password" name="Password" defaultValue={this.state.Password} onChange={this.handlePassword} size="60"/><br/>
       <label>Password_Again:</label><br/>
-      <input  type="text" id="Password_Again" name="Password_Again" defaultValue={this.state.PasswordAgain} onChange={this.state.handlePasswordAgain} size="60"/><br/>
+      <input  type="password" id="Password_Again" name="Password_Again" defaultValue={this.state.PasswordAgain} onChange={this.handlePasswordAgain} size="60"/><br/>
       <div>
             <label>Image</label><br/>
             <div>
@@ -146,9 +216,7 @@ class  Register extends React.Component{
         </div>
       <br/>
       <br/>
-      <button onClick={this.handleClick}>
-      Submit
-      </button>
+      <button> Submit </button>
     </form>
     </div>
   );
@@ -156,4 +224,3 @@ class  Register extends React.Component{
 }
  
 export default Register;
-
