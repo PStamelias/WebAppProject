@@ -19,6 +19,7 @@ from rest_framework.exceptions import ValidationError, ParseError
 class Login(APIView):
 	permission_classes = [AllowAny]
 	def post(self,request,format=None):
+		print(request.data['email'])
 		serializer = UserSerializer(data=request.data)
 		Email=request.data['email']
 		Password=request.data['Password']
@@ -27,20 +28,29 @@ class Login(APIView):
 			return Response("Admin")
 		else:
 			val1=serializer.check_user(request.data)
+			print("vgika")
 			if(val1==True):
 				return Response("User")
 			else:
 				raise AuthenticationFailed('User not found!')
-		return Response("data")
 
+			return Response("data")
 
 class Register(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
 		serializer = UserSerializer(data=request.data)
-		val=serializer.is_valid()
-		if(val==True):
+		if serializer.is_valid():
 			serializer.save()
 			return Response("data")
 		else:
 			raise ValidationError
+
+class Info(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		#queryset = user.objects.filter(Email_Address = request.data['email'])
+		#user_serializer = UserSerializer(queryset)
+		#print(user_serializer.data)
+		print("enter edw ")
+		return Response("data")

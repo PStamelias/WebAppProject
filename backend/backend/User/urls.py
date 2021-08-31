@@ -6,5 +6,6 @@ from django.urls import path, include
 
 urlpatterns = [ 
     path('app/',Login.as_view()),
-    path('userList/',Register.as_view())
+    path('userList/',Register.as_view()),
+    path('retrieve/',Info.as_view())
 ]

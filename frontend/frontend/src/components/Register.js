@@ -113,13 +113,12 @@ class  Register extends React.Component{
     }
   handleClick = () => {
     const formData = new FormData();
-    formData.append('email',this.state.email);
+    formData.append('Email_Address',this.state.email);
     formData.append('Name',this.state.Name);
     formData.append('Surname',this.state.Surname);
-    formData.append('Phone',this.state.Phone);
+    formData.append('Phone_Number',this.state.Phone);
     formData.append('Password',this.state.Password);
-    formData.append('PasswordAgain',this.state.PasswordAgain);
-    formData.append('Image', this.state.selectedFile)
+    /*formData.append('Image', this.state.selectedFile)*/
     axios.post('http://127.0.0.1:8000/users/userList/', formData, {headers: {'Content-Type': 'application/json'}})
     .then(response => {
       alert('You have successfully registered! Log in now to use the application');

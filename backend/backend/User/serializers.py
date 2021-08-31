@@ -7,10 +7,9 @@ class UserSerializer(serializers.ModelSerializer):
         model  = user
         fields = '__all__'
 
-    def get_passwd(self):
-        return self.Password
 
-    def validate(self, value):
+    def run_validation(self, value):
+        print("mpika")
         superusers = User.objects.filter(is_superuser=True).values_list('email')
         my_email=value['Email_Address']
         for email in superusers:
@@ -19,10 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
             if my_email==email[0]:
                 print("enter here")
                 raise serializers.ValidationError("Email Exists")
-        if user.objects.filter(Email_Address=value).exists():
+        if user.objects.filter(Email_Address=my_email).exists():
             raise serializers.ValidationError("Email Exists")
         else:
             return value
+
 
 
     def check_superuser(self,value):
@@ -49,14 +49,22 @@ class UserSerializer(serializers.ModelSerializer):
         print("value+",value)
         Password=value['Password']
         Email=value['email']
-        if user.objects.filter(Email_Address=Email).exists():
-            myuser = user.objects.filter(Email_Address=Email)
-            user1 = myuser.filter(Password=Password)
-            if user1:
-                return True
-            else:
-                return False
-        else:
+        print(Email)
+        done=True
+        i=0
+        for p in user.objects.all():
+            #print(Email)
+            #print(p.Email_Address)
+            print(p.Password)
+            print(p.Email_Address)
+            p.Email_Address = p.Email_Address.replace("[", "")
+            p.Email_Address = p.Email_Address.replace("]", "")
+            p.Email_Address = p.Email_Address.replace("'", "")
+            if p.Email_Address==Email and p.Password==Password:
+                done=True
+                break
+        if done==True:
+            return True
+        if done==False:
             return False
-        return False
 
