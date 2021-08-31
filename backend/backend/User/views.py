@@ -20,7 +20,7 @@ class Login(APIView):
 	permission_classes = [AllowAny]
 	def post(self,request,format=None):
 		serializer = UserSerializer(data=request.data)
-		Email=request.data['Email_Address']
+		Email=request.data['email']
 		Password=request.data['Password']
 		val=serializer.check_superuser(request.data)
 		if(val==True):

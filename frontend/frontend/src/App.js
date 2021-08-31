@@ -48,11 +48,27 @@ class  App extends React.Component {
     formData.append('Password',this.state.Password);
     axios.post('http://127.0.0.1:8000/users/app/', formData, {headers: {'Content-Type': 'application/json'}})
     .then(response => {
-      alert(response.data)
+      if(response.data === 'Admin'){
+        this.props.history.push({
+          pathname: '/Admin',
+          state :{
+          Email : this.state.email,
+          isLogin: true
+          }
+       })
+      }
+      if(response.data === 'User'){
+        this.props.history.push({
+          pathname: '/UserPage',
+          state :{
+          Email : this.state.email,
+          isLogin: true
+          }
+       })
+      }
     }).catch(error => {
       alert('Error:Email Address or Password are invalid');
     }).finally(() => { //Redirecting to the home page.
-      this.props.history.push("/");
     })
   }
   render(){

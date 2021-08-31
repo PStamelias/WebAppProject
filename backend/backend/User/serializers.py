@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
     def check_superuser(self,value):
         print("value+",value)
         Password=value['Password']
-        Email=value['Email_Address']
+        Email=value['email']
         kala=False
         superusers = User.objects.filter(is_superuser=True).values_list('email')
         for email_super in superusers:
@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
     def check_user(self,value):
         print("value+",value)
         Password=value['Password']
-        Email=value['Email_Address']
+        Email=value['email']
         if user.objects.filter(Email_Address=Email).exists():
             myuser = user.objects.filter(Email_Address=Email)
             user1 = myuser.filter(Password=Password)
