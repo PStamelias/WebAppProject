@@ -46,11 +46,42 @@ class Register(APIView):
 		else:
 			raise ValidationError
 
-class Info(APIView):
+class Info_User(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
-		#queryset = user.objects.filter(Email_Address = request.data['email'])
-		#user_serializer = UserSerializer(queryset)
-		#print(user_serializer.data)
 		print("enter edw ")
-		return Response("data")
+		data=[]
+		Email=request.data['email']
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Email:
+				p.Name = p.Name.replace("[", "")
+				p.Name = p.Name.replace("]", "")
+				p.Name = p.Name.replace("'", "")
+				data.append(p.Name)
+				p.Surname = p.Surname.replace("[", "")
+				p.Surname = p.Surname.replace("]", "")
+				p.Surname = p.Surname.replace("'", "")
+				data.append(p.Surname)
+				p.Phone_Number = p.Phone_Number.replace("[", "")
+				p.Phone_Number = p.Phone_Number.replace("]", "")
+				p.Phone_Number = p.Phone_Number.replace("'", "")
+				data.append(p.Phone_Number)
+				if p.Biography is not None:
+					p.Biography = p.Biography.replace("[", "")
+					p.Biography = p.Biography.replace("]", "")
+					p.Biography = p.Biography.replace("'", "")
+					data.append(p.Biography)
+				else:
+					data.append("")
+				if p.Professional_Experience is not None:
+					p.Professional_Experience = p.Professional_Experience.replace("[", "")
+					p.Professional_Experience = p.Professional_Experience.replace("]", "")
+					p.Professional_Experience = p.Professional_Experience.replace("'", "")
+					data.append(p.Professional_Experience)
+				else:
+					data.append("")
+				break
+		return Response(data,status=status.HTTP_200_OK)
