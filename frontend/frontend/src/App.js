@@ -53,6 +53,7 @@ class  App extends React.Component {
           pathname: '/Admin',
           state :{
           Email : this.state.email,
+          page : "Main_Page",
           isLogin: true
           }
        })
@@ -62,6 +63,7 @@ class  App extends React.Component {
           pathname: '/UserPage',
           state :{
           Email : this.state.email,
+          page : "Main_Page",
           isLogin: true
           }
        })

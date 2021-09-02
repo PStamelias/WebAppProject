@@ -1,0 +1,14 @@
+body{
+	background-color: Cornsilk;
+}
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+.Info{
+	left: auto;
+  	width: 200px;
+  	margin-top:70px;
+  	height: 800px;
+  	border: 3px solid black;
+}

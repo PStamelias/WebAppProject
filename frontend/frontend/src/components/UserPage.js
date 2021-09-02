@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import {useLocation} from "react-router-dom";
-import  './UserPage.css';
+import Plot from './Plot.js'
+import { BrowserRouter as Router} from 'react-router-dom';
+import Info from './Info.js'
 class UserPage  extends React.Component {
   constructor(props) {
    	super(props);
@@ -38,27 +40,21 @@ class UserPage  extends React.Component {
         }).catch(error => {
             alert("Something went wrong")
         })
+
   	}
   	render() {
   		if(this.state.con === false){
-  			return (<Redirect to='/'/>);
+  			return (<Redirect to='/UserPage/Settings'/>);
   		}
   		else{
   			if(this.state.name ==="Nothing"){
   				this.getData()
   			}
   			return(
-  				<div class="Info">
-  					<h4>User Details</h4>
-  					<p>Email:{this.state.email_address}</p>
-  					<p>Name:{this.state.name}</p>
-  					<p>Surname:{this.state.surname}</p>
-  					<p>Phone_Number:{this.state.Phone_Number}</p>
-  					<p>Biography:</p>
-  					<p>{this.state.Biography}</p>
-  					<p>Professional_Experience:</p>
-  					<p>{this.state.Professional_Experience}</p>
-  				</div>
+          <div>
+          <Plot name={"Main_Page"}/>
+          <Info name={this.state.name} email_address={this.state.email_address} surname={this.state.surname} Phone_Number={this.state.Phone_Number}/>
+          </div>
   			);
   		}
   	}
