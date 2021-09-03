@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router';
-import { Link } from 'react-router-dom';
+import {Redirect} from 'react-router';
+import {Link} from 'react-router-dom';
 import {useLocation} from "react-router-dom";
 import './Info.css'
 class Info  extends React.Component {

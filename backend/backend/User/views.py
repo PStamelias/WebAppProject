@@ -28,9 +28,9 @@ class Login(APIView):
 			return Response("Admin")
 		else:
 			val1=serializer.check_user(request.data)
-			print("vgika")
-			if(val1==True):
-				return Response("User")
+			print("val1=",val1)
+			if(val1!="null"):
+				return Response(val1)
 			else:
 				raise AuthenticationFailed('User not found!')
 
@@ -60,6 +60,7 @@ class Info_User(APIView):
 				p.Name = p.Name.replace("[", "")
 				p.Name = p.Name.replace("]", "")
 				p.Name = p.Name.replace("'", "")
+				data.append(p.id)
 				data.append(p.Name)
 				p.Surname = p.Surname.replace("[", "")
 				p.Surname = p.Surname.replace("]", "")
@@ -85,3 +86,66 @@ class Info_User(APIView):
 					data.append("")
 				break
 		return Response(data,status=status.HTTP_200_OK)
+
+
+
+
+
+class Email_Change(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		New_Email=request.data['new_email']
+		done=False
+		ide=-1
+		Password=request.data['Password']
+		Current_Email=request.data['current_email']
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			p.Password = p.Password.replace("[", "")
+			p.Password = p.Password.replace("]", "")
+			p.Password = p.Password.replace("'", "")
+			if p.Password==Password and Current_Email==p.Email_Address:
+				done=True
+				ide=p.id
+				break
+		if done==False:
+			raise AuthenticationFailed('Wrong Password')
+		print(ide)
+		print(New_Email)
+		t = user.objects.get(id=ide)
+		t.Email_Address=New_Email
+		t.save()
+		return Response(status=status.HTTP_200_OK)
+
+
+
+
+
+class Password_Change(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print("edwww ree")
+		Email=request.data['current_email']
+		current_password=request.data['current_password']
+		new_password=request.data['new_password']
+		ide=-1
+		done=False
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			p.Password = p.Password.replace("[", "")
+			p.Password = p.Password.replace("]", "")
+			p.Password = p.Password.replace("'", "")
+			if p.Password==current_password and Email==p.Email_Address:
+				done=True
+				ide=p.id
+				break
+		if done==False:
+			raise AuthenticationFailed('Wrong Password')
+		t = user.objects.get(id=ide)
+		t.Password=new_password
+		t.save()
+		return Response(status=status.HTTP_200_OK)

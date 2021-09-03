@@ -10,6 +10,7 @@ class UserPage  extends React.Component {
   constructor(props) {
    	super(props);
      	this.state = {
+          id: -1,
       		name:"Nothing",
       		surname:"",
       		email_address:"",
@@ -32,11 +33,12 @@ class UserPage  extends React.Component {
   		formData.append('email',this.state.email_address)
   		axios.post('http://127.0.0.1:8000/users/retrieve/', formData, {headers: {'Content-Type': 'application/json'}})
         .then(response => {
-        	this.setState({name: response.data[0]});
-        	this.setState({surname: response.data[1]});
-        	this.setState({Phone_Number: response.data[2]});
-        	this.setState({Biography: response.data[3]});
-        	this.setState({Professional_Experience: response.data[4]});
+          this.setState({id: response.data[0]});
+        	this.setState({name: response.data[1]});
+        	this.setState({surname: response.data[2]});
+        	this.setState({Phone_Number: response.data[3]});
+        	this.setState({Biography: response.data[4]});
+        	this.setState({Professional_Experience: response.data[5]});
         }).catch(error => {
             alert("Something went wrong")
         })
@@ -44,15 +46,15 @@ class UserPage  extends React.Component {
   	}
   	render() {
   		if(this.state.con === false){
-  			return (<Redirect to='/UserPage/Settings'/>);
+  			return (<Redirect to='/'/>);
   		}
   		else{
-  			if(this.state.name ==="Nothing"){
+  			if(this.state.name === "Nothing"){
   				this.getData()
   			}
   			return(
           <div>
-          <Plot name={"Main_Page"}/>
+          <Plot name={"Main_Page"} id={this.state.id} email={this.state.email_address}/>
           <Info name={this.state.name} email_address={this.state.email_address} surname={this.state.surname} Phone_Number={this.state.Phone_Number}/>
           </div>
   			);

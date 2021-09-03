@@ -8,11 +8,11 @@ import Settings from './Settings.js'
 function Routes() {
   return (
     <div>
-      <Route  exact  path="/"             component={App}/>
-      <Route  exact  path="/register"     component={Register}/>
-      <Route         path="/Admin"        component={AdminPage}/>
-      <Route         path="/UserPage"     component={UserPage}/>
-      <Route         path="/Settings"     component={Settings}/>
+      <Route  exact  path="/"                    component={App}/>
+      <Route  exact  path="/register"            component={Register}/>
+      <Route         path="/Admin"               component={AdminPage}/>
+      <Route         path="/UserPage/:id"        component={UserPage}/>
+      <Route         path="/Settings/:id"        component={Settings}/>
     </div>
   );
 }

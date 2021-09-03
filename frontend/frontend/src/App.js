@@ -58,9 +58,10 @@ class  App extends React.Component {
           }
        })
       }
-      if(response.data === 'User'){
+      else{
+        alert(response.data)
         this.props.history.push({
-          pathname: '/UserPage',
+          pathname: '/UserPage/${response.data}',
           state :{
           Email : this.state.email,
           page : "Main_Page",

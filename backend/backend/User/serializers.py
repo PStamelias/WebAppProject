@@ -50,21 +50,31 @@ class UserSerializer(serializers.ModelSerializer):
         Password=value['Password']
         Email=value['email']
         print(Email)
-        done=True
+        done=False
+        specific_id=""
         i=0
         for p in user.objects.all():
+            print("id=",p.id)
             #print(Email)
             #print(p.Email_Address)
-            print(p.Password)
-            print(p.Email_Address)
+            print("Password=",p.Password)
+            print("Email=",p.Email_Address)
             p.Email_Address = p.Email_Address.replace("[", "")
             p.Email_Address = p.Email_Address.replace("]", "")
             p.Email_Address = p.Email_Address.replace("'", "")
+            p.Password = p.Password.replace("[", "")
+            p.Password = p.Password.replace("]", "")
+            p.Password = p.Password.replace("'", "")
+            print("verification_email=",Email)
+            print("Password=",p.Password)
+            print("Email=",p.Email_Address)
             if p.Email_Address==Email and p.Password==Password:
+                print("mpikaaaaa")
+                specific_id=p.id
                 done=True
                 break
         if done==True:
-            return True
+            return specific_id
         if done==False:
-            return False
+            return "null"
 
