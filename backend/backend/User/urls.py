@@ -9,5 +9,6 @@ urlpatterns = [
     path('userList/',Register.as_view()),
     path('retrieve/',Info_User.as_view()),
     path('Email_Change/',Email_Change.as_view()),
-    path('Password_Change/',Password_Change.as_view())
+    path('Password_Change/',Password_Change.as_view()),
+    path('Data_Send/',Data_Send.as_view())
 ]

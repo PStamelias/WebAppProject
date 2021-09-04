@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import user
+from .models import user,UserInfo
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -78,3 +78,12 @@ class UserSerializer(serializers.ModelSerializer):
         if done==False:
             return "null"
 
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = UserInfo
+        fields = '__all__'
+
+    def run_validation(self, value):
+        return value

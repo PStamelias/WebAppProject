@@ -1,11 +1,10 @@
 from django.shortcuts import render
-
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from User.models import user
+from User.models import user,UserInfo
 from rest_framework.exceptions import AuthenticationFailed
-from User.serializers import UserSerializer
+from User.serializers import UserSerializer,UserInfoSerializer
 from django.core.exceptions import BadRequest
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -77,13 +76,6 @@ class Info_User(APIView):
 					data.append(p.Biography)
 				else:
 					data.append("")
-				if p.Professional_Experience is not None:
-					p.Professional_Experience = p.Professional_Experience.replace("[", "")
-					p.Professional_Experience = p.Professional_Experience.replace("]", "")
-					p.Professional_Experience = p.Professional_Experience.replace("'", "")
-					data.append(p.Professional_Experience)
-				else:
-					data.append("")
 				break
 		return Response(data,status=status.HTTP_200_OK)
 
@@ -149,3 +141,43 @@ class Password_Change(APIView):
 		t.Password=new_password
 		t.save()
 		return Response(status=status.HTTP_200_OK)
+
+
+
+class Data_Send(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print(request.data)
+		case=False
+		ide=-1
+		Current_Email=request.data['Email_Address']
+		for p in UserInfo.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Current_Email:
+				case=True
+				ide=p.id
+				break
+		print(case)
+		if case == True:
+			t = UserInfo.objects.get(id=ide)
+			if not request.data['Professional_Experience']: 
+				t.Professional_Experience=request.data['Professional_Experience']
+			if not request.data['Education']: 
+				t.Education=request.data['Education']
+			if not request.data['Skills']: 
+				t.Skills=request.data['Skills']
+			if not request.data['PrivateProf_Experience']: 
+				t.PrivateProf_Experience=request.data['PrivateProf_Experience']
+			if not request.data['PrivateEducation']: 
+				t.PrivateEducation=request.data['PrivateEducation']
+			if not request.data['PrivateSkills']: 
+				t.PrivateSkills=request.data['PrivateSkills']	
+			t.save()
+			return Response(status=status.HTTP_200_OK)
+		else:
+			serializer=UserInfoSerializer(data=request.data)
+			if serializer.is_valid():
+				serializer.save()
+			return Response(status=status.HTTP_200_OK)

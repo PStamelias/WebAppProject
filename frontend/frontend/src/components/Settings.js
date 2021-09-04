@@ -15,6 +15,7 @@ class Settings  extends React.Component {
       		new_password:"",
       		new_password_again:"",
       		con:true,
+      		access:"",
       		don:true,
     	};
     	if(props.location.state == null){
@@ -35,6 +36,7 @@ class Settings  extends React.Component {
     	this.handlePassword_onchange_Password=this.handlePassword_onchange_Password.bind(this);
     	this.handleNewPassword_onchange_Password=this.handleNewPassword_onchange_Password.bind(this);
     	this.handleNewPasswordAgain_onchange_Password=this.handleNewPasswordAgain_onchange_Password.bind(this)
+  		this.change_email=this.change_email.bind(this);
   	}
   	handleEmail(e){
   		this.setState({new_email_address: e.target.value});
@@ -53,18 +55,18 @@ class Settings  extends React.Component {
   	}
   	check_Types(){
   		if(this.state.new_email_address !== null && this.state.new_email_address !== '') {
-	      this.state.don=true;
+	      /*this.state.don=true;*/
 	    }
 	    else{
 	      alert('Empty email')
-	      this.state.don=false;
+	      /*this.state.don=false;*/
 	    }
 	    if(this.state.Password !== null && this.state.Password !== '') {
-	      this.state.don=true;
+	      /*this.state.don=true;*/
 	    }
 	    else{
 	      alert('Empty Password')
-	      this.state.don=false;
+	      /*this.state.don=false;*/
 	    }
   	}
   	handleClickOne(e){
@@ -80,7 +82,7 @@ class Settings  extends React.Component {
 	        alert('Error:Something went wrong on changing Email');
 	    }).finally(() => { //Redirecting to the  page.
 	       alert(this.state.con)
-	       alert(this.state.id)
+	       this.props.history.push("/Register");
 	    })
 	}
   	handle_Change_Email(e){
@@ -102,8 +104,12 @@ class Settings  extends React.Component {
 	        alert('Error:Something went wrong on changing Password');
 	    }).finally(() => { //Redirecting to the  page.
 	       alert(this.state.con)
+	       this.setState({access:"User"});
 	       alert(this.state.id)
 	    })
+  	}
+  	change_email(){
+  		this.setState({email_address:this.state.new_email_address});
   	}
   	check_TypesTwo(){
   		if(this.state.Password !== null && this.state.Password !== '') {
@@ -141,13 +147,18 @@ class Settings  extends React.Component {
    		}
   	}
 	render(){
-		if(this.state.con === false ){
-  			return (<Redirect to='/'/>);
-  		}
-  		else{
+		if(this.state.access === "User"){
 			return(
+				<Redirect to={{pathname: "/UserPage/:"+this.state.id,state: { Email: this.state.email,id:this.state.id}}}/>
+			);
+		}
+  		else{
+  			if(this.state.con === false ){
+  				return (<Redirect to='/'/>);
+  			}
+  			else{
+  				return(
 				<div>
-				/*edw tha perpei na steilw kai to kainourgio email*/
 					<Plot name={"Settings"} id={this.state.id} email={this.state.email_address}/>
 					 <h4>Change Email</h4>
 					 <form onSubmit={this.handle_Change_Email}>
@@ -176,6 +187,7 @@ class Settings  extends React.Component {
 					</form>
 				</div>
 			);
+  			}
 		}
 	}
 }
