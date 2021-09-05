@@ -19,6 +19,7 @@ class Settings  extends React.Component {
       		don:true,
     	};
     	if(props.location.state == null){
+    		alert(this.state.new_email_address)
     		this.state.con=false	
     	}
     	else{
@@ -55,18 +56,18 @@ class Settings  extends React.Component {
   	}
   	check_Types(){
   		if(this.state.new_email_address !== null && this.state.new_email_address !== '') {
-	      /*this.state.don=true;*/
+	      this.state.don=true;
 	    }
 	    else{
 	      alert('Empty email')
-	      /*this.state.don=false;*/
+	      this.state.don=false;
 	    }
 	    if(this.state.Password !== null && this.state.Password !== '') {
-	      /*this.state.don=true;*/
+	      this.state.don=true;
 	    }
 	    else{
 	      alert('Empty Password')
-	      /*this.state.don=false;*/
+	      this.state.don=false;
 	    }
   	}
   	handleClickOne(e){
@@ -82,8 +83,17 @@ class Settings  extends React.Component {
 	        alert('Error:Something went wrong on changing Email');
 	    }).finally(() => { //Redirecting to the  page.
 	       alert(this.state.con)
-	       this.props.history.push("/Register");
 	    })
+	    alert("email=",this.state.new_email_address)
+	    this.props.history.push({
+          pathname:"/UserPage/:"+this.state.id,
+          state :{
+          Email : this.state.new_email_address,
+          id :  this.state.id,
+          page : "Main_Page",
+          isLogin: true
+          }
+       })
 	}
   	handle_Change_Email(e){
   		this.check_Types()
@@ -107,6 +117,15 @@ class Settings  extends React.Component {
 	       this.setState({access:"User"});
 	       alert(this.state.id)
 	    })
+	    this.props.history.push({
+          pathname:"/UserPage/:"+this.state.id,
+          state :{
+          Email : this.state.email_address,
+          id :  this.state.id,
+          page : "Main_Page",
+          isLogin: true
+          }
+       })
   	}
   	change_email(){
   		this.setState({email_address:this.state.new_email_address});
@@ -147,17 +166,11 @@ class Settings  extends React.Component {
    		}
   	}
 	render(){
-		if(this.state.access === "User"){
-			return(
-				<Redirect to={{pathname: "/UserPage/:"+this.state.id,state: { Email: this.state.email,id:this.state.id}}}/>
-			);
-		}
-  		else{
-  			if(this.state.con === false ){
+		if(this.state.con === false ){
   				return (<Redirect to='/'/>);
-  			}
-  			else{
-  				return(
+  		}
+  		else{
+  			return(
 				<div>
 					<Plot name={"Settings"} id={this.state.id} email={this.state.email_address}/>
 					 <h4>Change Email</h4>
@@ -187,7 +200,6 @@ class Settings  extends React.Component {
 					</form>
 				</div>
 			);
-  			}
 		}
 	}
 }

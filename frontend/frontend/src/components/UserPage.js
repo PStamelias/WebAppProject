@@ -20,15 +20,21 @@ class UserPage  extends React.Component {
       		con:false,
     	};
     	if(props.location.state == null){
+        alert("edw1")
     		this.state.con=false	
     	}
     	else{
+        alert("2")
     		this.state.con=props.location.state.isLogin
     		this.state.email_address=props.location.state.Email
+        this.state.id=props.location.state.id
+        alert(this.state.email_address)
+        alert(this.state.id)
     	}
     	this.getData = this.getData.bind(this);
   	}
   	getData(){
+      alert("Enter on getData")
   		const formData = new FormData();
   		formData.append('email',this.state.email_address)
   		axios.post('http://127.0.0.1:8000/users/retrieve/', formData, {headers: {'Content-Type': 'application/json'}})

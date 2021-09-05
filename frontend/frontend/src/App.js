@@ -64,6 +64,7 @@ class  App extends React.Component {
           pathname:"/UserPage/:"+response.data,
           state :{
           Email : this.state.email,
+          id: response.data,
           page : "Main_Page",
           isLogin: true
           }

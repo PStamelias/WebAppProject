@@ -16,9 +16,11 @@ class Personal  extends React.Component {
 			valEdu:false,
 			valSkills:false,
 			id:-1,
+			myval:"",
 			email:"",
 	   	};
 	   	if(props.location.state == null){
+	   		alert("here")
     		this.state.access="Empty"	
     	}
     	else{
@@ -57,6 +59,8 @@ class Personal  extends React.Component {
   	}
   	handleSubmit(){
   		const formData = new FormData();
+  		this.setState({myval:this.state.email});
+  		alert(this.state.email)
   		formData.append('Email_Address',this.state.email)
   		formData.append('Professional_Experience',this.state.Prof_Exp);
   		formData.append('Education',this.state.Edu);
@@ -67,31 +71,31 @@ class Personal  extends React.Component {
 	    axios.post('http://127.0.0.1:8000/users/Data_Send/', formData, {headers: {'Content-Type': 'application/json'}})
 	    .then(response => {
 	    	alert("Data Saved Successfully")
+	    	alert("Current email=",this.state.email)
 	    }).catch(error => {
 	        alert('Error:Something went wrong on data sending');
-	    }).finally(() => { //Redirecting to the  page.
-	       alert(this.state.email)
-	       alert(this.state.id)
-	       this.state.access="User"
+	    }).finally(() => {
 	    })
+	    alert("Current email=",this.state.email)
+	    this.props.history.push({
+          pathname:"/UserPage/:"+this.state.id,
+          state :{
+          Email : this.state.email,
+          id :  this.state.id,
+          page : "Main_Page",
+          isLogin: true
+          }
+       })
 
   	}
 	render(){
-		if(this.state.access === "User"){
-			return(
-				<Redirect to={{pathname: "/UserPage/:"+this.state.id,state: { Email: this.state.email,id:this.state.id}}}/>
-			);
-		}
 		if(this.state.access === "Empty"){
-			return (<Redirect to='/'/>);
-		}
-		else if(this.state.access === "Show"){
 			return (<Redirect to='/'/>);
 		}
 		else{
 			return(
 				<div>
-				<Plot name={"Personal_information"} id={this.state.id} email={this.state.email_address}/>
+				<Plot name={"Personal_information"} id={this.state.id} email={this.state.email}/>
 				<br/>
 				<br/>
 				<br/>

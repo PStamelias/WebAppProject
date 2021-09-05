@@ -10,5 +10,7 @@ urlpatterns = [
     path('retrieve/',Info_User.as_view()),
     path('Email_Change/',Email_Change.as_view()),
     path('Password_Change/',Password_Change.as_view()),
-    path('Data_Send/',Data_Send.as_view())
+    path('Data_Send/',Data_Send.as_view()),
+    path('GetUsers/',GetUsers.as_view()),
+    path('GetId/',GetId.as_view())
 ]

@@ -181,3 +181,24 @@ class Data_Send(APIView):
 			if serializer.is_valid():
 				serializer.save()
 			return Response(status=status.HTTP_200_OK)
+
+
+class GetUsers(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			data.append(p.Email_Address)
+		return Response({"keywords":data})
+
+
+class GetId(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		for p in user.objects.all():
+			data.append(p.id)
+		return Response({"keywords":data})
