@@ -202,3 +202,54 @@ class GetId(APIView):
 		for p in user.objects.all():
 			data.append(p.id)
 		return Response({"keywords":data})
+
+
+
+
+
+class GetAllInfo(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		print(request.data['Email_Address'])
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==request.data['Email_Address']:
+				data.append(p.Email_Address)
+				p.Name = p.Name.replace("[", "")
+				p.Name = p.Name.replace("]", "")
+				p.Name = p.Name.replace("'", "")
+				data.append(p.Name)
+				p.Surname = p.Surname.replace("[", "")
+				p.Surname = p.Surname.replace("]", "")
+				p.Surname = p.Surname.replace("'", "")
+				data.append(p.Surname)
+				p.Phone_Number = p.Phone_Number.replace("[", "")
+				p.Phone_Number = p.Phone_Number.replace("]", "")
+				p.Phone_Number = p.Phone_Number.replace("'", "")
+				data.append(p.Phone_Number)
+				if p.Biography is not None:
+					p.Biography = p.Biography.replace("[", "")
+					p.Biography = p.Biography.replace("]", "")
+					p.Biography = p.Biography.replace("'", "")
+					data.append(p.Biography)
+				else:
+					data.append("")
+				break
+		for p in UserInfo.objects.all():
+			if p.Email_Address==request.data['Email_Address']:
+				p.Professional_Experience = p.Professional_Experience.replace("[", "")
+				p.Professional_Experience = p.Professional_Experience.replace("]", "")
+				p.Professional_Experience = p.Professional_Experience.replace("'", "")
+				data.append(p.Professional_Experience)
+				p.Education = p.Education.replace("[", "")
+				p.Education = p.Education.replace("]", "")
+				p.Education = p.Education.replace("'", "")
+				data.append(p.Education)
+				p.Skills = p.Skills.replace("[", "")
+				p.Skills = p.Skills.replace("]", "")
+				p.Skills = p.Skills.replace("'", "")
+				data.append(p.Skills)
+		return Response(data)

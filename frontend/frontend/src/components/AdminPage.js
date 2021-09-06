@@ -12,7 +12,7 @@ class AdminPage  extends React.Component {
       		ExportData:[],
       		Usersdata:[],
       		iddata:[],
-      		button:"",
+      		button:2,
     	};
     	if(props.location.state == null){
         	alert("edw1")
@@ -23,10 +23,10 @@ class AdminPage  extends React.Component {
     		this.state.con=true
     	}
     	this.getData=this.getData.bind(this);
-    	this.handleXML=this.handleXML.bind(this);
-    	this.handleJSON=this.handleXML.bind(this);
     	this.handle=this.handle.bind(this);
     	this.SeenProf=this.SeenProf.bind(this);
+    	this.SeenJson=this.SeenJson.bind(this);
+    	this.SeenXML=this.SeenXML.bind(this);
     }
     getData(){
     	axios.post('http://127.0.0.1:8000/users/GetUsers/', {headers: {'Content-Type': 'application/json'}})
@@ -43,21 +43,19 @@ class AdminPage  extends React.Component {
         })
         this.setState({name:"Other"});
     }
-    handleXML(){
-    	this.setState({button:"XML"});
-    	alert(this.state.ExportData)
-    }
-    handleJSON(){
-    	this.setState({button:"JSON"});
-    	alert(this.state.ExportData)
-    }
     SeenProf(e){
     	let isChecked = e.target.name;
     	this.setState({ ExportData: [this.state.ExportData, isChecked] })
-    	alert(isChecked)
     }
-    handle(){
-    	alert("here1")
+    SeenJson(){
+    	this.setState({button:1});
+    }
+    SeenXML(){
+    	this.setState({button:2});
+    }
+    handle(e){
+    	alert(this.state.ExportData)
+    	alert(this.state.button)
     }
     render() {
     	if(this.state.con === false){
@@ -72,7 +70,7 @@ class AdminPage  extends React.Component {
 		  		items.push(<input type="checkbox" id={this.state.Usersdata[i]} name={this.state.Usersdata[i]} onChange={this.SeenProf}/>)
 		  		items.push(<Link
 					  to={{
-					    pathname: "/PersonalInfo/"+this.state.iddata[i],
+					    pathname: "/PersonalInfo/:"+this.state.iddata[i],
 					    state: { email: this.state.Usersdata[i], id: this.state.iddata[i]}
 					  }}>{this.state.Usersdata[i]}</Link>)
 					 items.push(<br/>)
@@ -80,10 +78,19 @@ class AdminPage  extends React.Component {
 		  	}
 		    return(
 		    	<div>
-		    	<form onClick={this.handleXML}>
+		    	<form onSubmit={this.handle}>
 		    	<h1>Admin</h1>
 		    	{items}
-		    	<button>Export</button>
+		    	<br/>
+		    	<br/>
+		    	<br/>
+		    	<p>Type</p>
+		    	<input type="checkbox" id="type5" name="type5" onChange={this.SeenXML}/>
+				<label for="type5">XML</label>
+				<input type="checkbox" id="type6" name="type6" onChange={this.SeenJson}/>
+				<label for="type6">JSON</label><br/>
+				<br/>
+		    	<button>Submit</button>
 		    	</form>
 		    	</div>
 		    );
