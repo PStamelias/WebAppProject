@@ -1,0 +1,12 @@
+.a{
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 2px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 7%;
+  font-size: 15px;
+}

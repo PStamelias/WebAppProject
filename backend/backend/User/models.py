@@ -22,3 +22,7 @@ class UserInfo(models.Model):
 	PrivateProf_Experience  = models.CharField(max_length=240,null=True)
 	PrivateEducation		= models.CharField(max_length=240,null=True)
 	PrivateSkills			= models.CharField(max_length=240,null=True)
+
+
+
+

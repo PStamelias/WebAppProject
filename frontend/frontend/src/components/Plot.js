@@ -35,6 +35,17 @@ class Plot  extends React.Component {
           }
        })
   	}
+  	goNetWork = event =>{
+  		this.props.history.push({
+         pathname: "/Network/:"+this.props.id,
+         state :{
+	         Email : this.props.email,
+	         id: this.props.id,
+	         page : "Network",
+	         isLogin: true
+         }
+      })
+  	}
   	goPersonal = event =>{
   		alert(this.props.id)
   		alert(this.props.email)
@@ -66,7 +77,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 					<button class="buttonactive" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  	<button class="button">Δίκτυο</button>
+				  	<button class="button"onClick={this.goNetWork} >Δίκτυο</button>
 				  	<button class="button">Αγγελίες</button>
 				  	<button class="button">Συζητήσεις</button>
 				  	<button class="button">Ειδοποιήσεις</button>
@@ -79,7 +90,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="buttonactive">Δίκτυο</button>
+				  <button class="buttonactive" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="button">Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
@@ -92,7 +103,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="button">Δίκτυο</button>
+				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="buttonactive">Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
@@ -105,7 +116,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="button">Δίκτυο</button>
+				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="button">Αγγελίες</button>
 				  <button class="buttonactive">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
@@ -118,7 +129,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="button">Δίκτυο</button>
+				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="button">Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="buttonactive">Ειδοποιήσεις</button>
@@ -131,7 +142,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="button">Δίκτυο</button>
+				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="button">Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
@@ -144,7 +155,7 @@ class Plot  extends React.Component {
 			return(
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
-				  <button class="button">Δίκτυο</button>
+				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
 				  <button class="button">Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>

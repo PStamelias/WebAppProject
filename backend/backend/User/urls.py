@@ -13,5 +13,6 @@ urlpatterns = [
     path('Data_Send/',Data_Send.as_view()),
     path('GetUsers/',GetUsers.as_view()),
     path('GetId/',GetId.as_view()),
-    path('GetAllInfo/',GetAllInfo.as_view())
+    path('GetAllInfo/',GetAllInfo.as_view()),
+    path('SearchEmail/',SearchEmail.as_view()),
 ]

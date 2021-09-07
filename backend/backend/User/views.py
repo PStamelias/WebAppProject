@@ -253,3 +253,34 @@ class GetAllInfo(APIView):
 				p.Skills = p.Skills.replace("'", "")
 				data.append(p.Skills)
 		return Response(data)
+
+
+
+
+
+
+
+
+
+class SearchEmail(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Email=request.data['email']
+		ide=-1
+		print("Search Email=              ",Email)
+		done=False
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Email:
+				print("mpika edw reeeeeeeeeeee")
+				ide=p.id
+				done=True
+				break
+		if done==False:
+			raise AuthenticationFailed('Email not Found')
+		data=[]
+		data.append(ide)
+		data.append(Email)
+		return Response(data)		
