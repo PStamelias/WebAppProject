@@ -6,7 +6,9 @@ import AdminPage from './AdminPage.js'
 import UserPage from './UserPage.js'
 import Settings from './Settings.js'
 import Network from './Network.js'
+import Ads from './Ads.js'
 import Personal from './Personal.js'
+import NewAd from './NewAd.js'
 import PersonalInfo from './PersonalInfo.js'
 function Routes() {
   return (
@@ -18,6 +20,8 @@ function Routes() {
       <Route         path="/Network/:id"             component={Network}/>
       <Route         path="/Settings/:id"            component={Settings}/>
       <Route         path="/Personal/:id"            component={Personal}/>
+      <Route         path="/Ads/:id"                 component={Ads}/>
+      <Route         path="/NewAd/"                  component={NewAd}/>
       <Route         path="/PersonalInfo/:id"        component={PersonalInfo}/>
     </div>
   );

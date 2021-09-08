@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
@@ -26,3 +27,8 @@ class UserInfo(models.Model):
 
 
 
+class AD(models.Model):
+	Email_Address    =  models.EmailField(max_length=240,unique=True)
+	NameAD           =  models.CharField(max_length=240,null=True)
+	TextAD           =  models.TextField(null=True)
+	ApplicationUsers =  ArrayField(ArrayField(models.CharField(max_length=240, blank=True)))

@@ -284,3 +284,19 @@ class SearchEmail(APIView):
 		data.append(ide)
 		data.append(Email)
 		return Response(data)		
+
+
+
+
+
+
+class SubmitAd(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Email=request.data['email']
+		Adname=request.data['AdName']
+		TextAd=request.data['TextAd']
+		print(Email)
+		print(Adname)
+		print(TextAd)
+		return Response(status=status.HTTP_200_OK)

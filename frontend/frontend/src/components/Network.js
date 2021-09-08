@@ -20,7 +20,7 @@ class Network extends React.Component {
 	     	user_search:"",
 	    };
 	    if(props.location.state == null){
-
+	    	alert("enter ston constructr")
     		this.state.con=false	
     	}
     	else{
@@ -29,32 +29,26 @@ class Network extends React.Component {
     		this.state.id=props.location.state.id
     	}
     	this.Search=this.Search.bind(this);
-    	this.fun1=this.fun1.bind(this);
+
     	this.giveValuetosearch=this.giveValuetosearch.bind(this);
   	}
   	giveValuetosearch(e){
   		this.setState({user_search: e.target.value});
-  	}
-  	fun1(){
-  		this.forceUpdate();
   	}
   	Search(){
   		alert(this.state.user_search)
   		const formData=new FormData();
   		if(this.state.user_search==this.state.email_address){
   			alert("Cannot search the same email")
-  			this.fun1()
+  			alert(this.state.email_address)
   		}
   		formData.append('email',this.state.user_search)
   		/*axios.post('http://127.0.0.1:8000/users/SearchEmail/',formData,{headers: {'Content-Type': 'application/json'}})
 	    .then(response => {
-	    	alert("edwwww reeee")
-	    	this.setState({val1:"two"});
 	    	alert(this.state.val1)
 	    }).catch(error => {
 	    	alert("Something went wrong")
 	    })*/
-	    alert(this.state.val1)
   	}
   	render(){
   		if(this.state.con === false ){

@@ -15,4 +15,5 @@ urlpatterns = [
     path('GetId/',GetId.as_view()),
     path('GetAllInfo/',GetAllInfo.as_view()),
     path('SearchEmail/',SearchEmail.as_view()),
+    path('SubmitAd/',SubmitAd.as_view())
 ]

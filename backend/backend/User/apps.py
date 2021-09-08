@@ -7,3 +7,7 @@ class userConfig(AppConfig):
 
 class UserInfoConfig(AppConfig):
     name = 'UserInfoConfig'
+
+
+class ADConfig(AppConfig):
+    name = 'AD'

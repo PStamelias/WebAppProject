@@ -21,7 +21,19 @@ class Plot  extends React.Component {
    		if(props.location.state != null){
 	    		this.state.id=props.location.state.id
 	    		this.state.email=props.location.state.Email
-	    	}
+	    }
+  	}
+  	goAds  = event =>{
+  		alert(this.props.id)
+  		this.props.history.push({
+          pathname: "/Ads/:"+this.props.id,
+          state :{
+          Email : this.props.email,
+          id: this.props.id,
+          page : "Ads",
+          isLogin: true
+          }
+       })
   	}
   	goSettings = event => {
   		alert(this.props.id)
@@ -78,7 +90,7 @@ class Plot  extends React.Component {
 				<div>
 					<button class="buttonactive" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  	<button class="button"onClick={this.goNetWork} >Δίκτυο</button>
-				  	<button class="button">Αγγελίες</button>
+				  	<button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  	<button class="button">Συζητήσεις</button>
 				  	<button class="button">Ειδοποιήσεις</button>
 				  	<button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -91,7 +103,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="buttonactive" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="button">Αγγελίες</button>
+				  <button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
 				  <button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -104,7 +116,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="buttonactive">Αγγελίες</button>
+				  <button class="buttonactive" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
 				  <button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -117,7 +129,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="button">Αγγελίες</button>
+				  <button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="buttonactive">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
 				  <button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -130,7 +142,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="button">Αγγελίες</button>
+				  <button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="buttonactive">Ειδοποιήσεις</button>
 				  <button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -143,7 +155,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="button">Αγγελίες</button>
+				  <button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
 				  <button class="buttonactive" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
@@ -156,7 +168,7 @@ class Plot  extends React.Component {
 				<div>
 				  <button class="button" onClick={this.goHome}>Αρχική Σελίδα</button>
 				  <button class="button" onClick={this.goNetWork}>Δίκτυο</button>
-				  <button class="button">Αγγελίες</button>
+				  <button class="button" onClick={this.goAds}>Αγγελίες</button>
 				  <button class="button">Συζητήσεις</button>
 				  <button class="button">Ειδοποιήσεις</button>
 				  <button class="button" onClick={this.goPersonal}>Προσωπικά Στοιχεία</button>
