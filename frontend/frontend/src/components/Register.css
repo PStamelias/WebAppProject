@@ -1,3 +1,23 @@
 body{
 	background-color: DarkBlue;
 }
+.some {
+  display: block;
+  width: 40%;
+  border: none;
+  background-color: black;
+  color: white;
+  right: 1100px;
+  padding: 14px 28px;
+  font-size: 19px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.somev1{
+  display: block;
+  width: 6%;
+  border: none;
+  background-color: black;
+  color: white;
+}

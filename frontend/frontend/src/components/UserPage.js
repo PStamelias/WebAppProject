@@ -6,6 +6,7 @@ import {useLocation} from "react-router-dom";
 import Plot from './Plot.js'
 import { BrowserRouter as Router} from 'react-router-dom';
 import Info from './Info.js'
+import './UserPage.css'
 class UserPage  extends React.Component {
   constructor(props) {
    	super(props);
@@ -16,6 +17,7 @@ class UserPage  extends React.Component {
       		email_address:"",
       		Phone_Number: "",
       		Biography: "",
+          Article:"",
       		Professional_Experience: "",
       		con:false,
     	};
@@ -50,6 +52,12 @@ class UserPage  extends React.Component {
         })
 
   	}
+    handleText(e){
+      this.setState({Article: e.target.value});
+    }
+    SendArticle(){
+
+    }
   	render() {
   		if(this.state.con === false){
   			return (<Redirect to='/'/>);
@@ -59,9 +67,16 @@ class UserPage  extends React.Component {
   				this.getData()
   			}
   			return(
-          <div>
+          <div id="main">
           <Plot name={"Main_Page"} id={this.state.id} email={this.state.email_address}/>
           <Info name={this.state.name} email_address={this.state.email_address} surname={this.state.surname} Phone_Number={this.state.Phone_Number}/>
+          <div class="right">
+          <form onSubmit={this.SendArticle}>
+          <h3>New Article</h3>
+          <textarea id="Article" name="Article" defaultValue={this.state.Article}  onChange={this.handleText} rows="10" cols="116"></textarea>
+          <button>Submit</button>
+          </form>
+          </div>
           </div>
   			);
   		}

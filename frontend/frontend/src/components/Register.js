@@ -207,7 +207,7 @@ class  Register extends React.Component{
             <label>Image</label><br/>
             <div>
                 <input type="file" onChange={this.onFileChange} /><br/><br/>
-                <button onClick={this.onFileUpload}>
+                <button class="somev1" onClick={this.onFileUpload}>
                   Upload!
                 </button>
             </div>
@@ -215,7 +215,7 @@ class  Register extends React.Component{
         </div>
       <br/>
       <br/>
-      <button> Submit </button>
+      <button class="some"> Submit </button>
     </form>
     </div>
   );

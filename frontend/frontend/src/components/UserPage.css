@@ -16,3 +16,13 @@
         -webkit-border-radius: 10px;
         margin:10px;
 }
+div.right{
+        position:absolute;
+        top:20%;
+        right:900px;
+        width: 100px;
+}
+div#main{
+        position:relative;
+        vertical-align:middle;
+}

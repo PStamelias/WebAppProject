@@ -28,12 +28,22 @@ h1{
   background-color: #04AA6D;
   color: white;
 }
-.right {
-    text-align: right;
-    color:black;
-    float: right;
-}
 
+.graph {
+    width: 250px;
+    height: 250px;
+    border: 1px solid #aeaeae;
+    background-color: #eaeaea;
+}
+.bar {
+    width: 85px;
+    margin: 1px;
+    display: inline-block;
+    position: relative;
+    left: 1190px;
+    background-color: black;
+    vertical-align: baseline;
+}
 
 .form label {
     display: inline-block;
@@ -44,7 +54,7 @@ h1{
 
 
 .container {
-  width: 300px;
+  width: 400px;
   clear: both;
 }
 

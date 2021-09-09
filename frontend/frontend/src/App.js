@@ -80,7 +80,7 @@ class  App extends React.Component {
     <div>
       <h1>Welcome to Professional Νetworking</h1>
       <div class="topnav">
-        <div class="right">
+        <div class="bar">
           <Link to="/Register">Sign up</Link>
         </div>
         <div class="container">
