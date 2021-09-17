@@ -11,3 +11,13 @@ class UserInfoConfig(AppConfig):
 
 class ADConfig(AppConfig):
     name = 'AD'
+
+
+
+class PersonADConfig(AppConfig):
+    name = 'PersonAD'
+
+
+
+class Connection_RequestConfing(AppConfig):
+    name= 'Connection_Request'

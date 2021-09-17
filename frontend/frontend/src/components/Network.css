@@ -1,7 +1,14 @@
-.a{
+.bte{
   background-color: black;
-  height:30px;
-  width:70px;
-  margin-right:3px;
-  position: absolute;
+  height:60px;
+  text-align: center;
+  display:inline-block;
+  width:80px;
+  top: 2px;
+  height:100%;
+  width:100px;
+  margin-right:9px;
+  padding-bottom: 9px;
+  font-size : 14px;
+  position: relative;
 }

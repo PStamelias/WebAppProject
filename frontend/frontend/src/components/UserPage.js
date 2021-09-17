@@ -34,6 +34,8 @@ class UserPage  extends React.Component {
         alert(this.state.id)
     	}
     	this.getData = this.getData.bind(this);
+      this.handleText=this.handleText.bind(this);
+      this.SendArticle=this.SendArticle.bind(this);
   	}
   	getData(){
       alert("Enter on getData")
@@ -56,7 +58,19 @@ class UserPage  extends React.Component {
       this.setState({Article: e.target.value});
     }
     SendArticle(){
-
+      const formData=new FormData()
+      var myCurrentDate = new Date();
+      var date = myCurrentDate.getFullYear() + '-' + (myCurrentDate.getMonth()+1) + '-' + myCurrentDate.getDate() +' '+ myCurrentDate.getHours()+':'+ myCurrentDate.getMinutes();
+      formData.append("Email_Address",this.state.email_address)
+      formData.append("TextArticle",this.state.Article)
+      formData.append("Current_date",date)
+      alert("mpainw edw st sendarticle ")
+      axios.post('http://127.0.0.1:8000/users/PostArticle/',formData,{headers: {'Content-Type': 'application/json'}})
+      .then(response => {
+        alert("Article posted Successfully")  
+      }).catch(error => {
+        alert("Something went wrong")
+      })
     }
   	render() {
   		if(this.state.con === false){

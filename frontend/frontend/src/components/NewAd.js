@@ -40,9 +40,9 @@ class NewAd extends React.Component {
    	}
    	SubmitFunction(){
    		const formData=new FormData()
-   		formData.append('email',this.state.email_address)
-   		formData.append('AdName',this.state.AdName)
-   		formData.append('TextAd',this.state.TextAd)
+   		formData.append('Email_Address',this.state.email_address)
+   		formData.append('NameAD',this.state.AdName)
+   		formData.append('TextAD',this.state.TextAd)
    		axios.post('http://127.0.0.1:8000/users/SubmitAd/', formData, {headers: {'Content-Type': 'application/json'}})
 	    .then(response => {
 	      alert('You have successfully submit the Ad');

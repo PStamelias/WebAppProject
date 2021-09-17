@@ -27,6 +27,7 @@ class Ads extends React.Component {
     		this.state.id=props.location.state.id
     	}
     	this.SubmitAd=this.SubmitAd.bind(this);
+    	this.CheckAds=this.CheckAds.bind(this);
    	}
    	SubmitAd(){
    		alert(this.state.email_address)
@@ -42,7 +43,17 @@ class Ads extends React.Component {
        })
    	}
    	CheckAds(){
-
+		alert(this.state.email_address)
+   		alert(this.state.id)
+   		this.props.history.push({
+          pathname: "/CheckAds/",
+          state :{
+          Email : this.state.email_address,
+          id: this.state.id,
+          page : "Ads",
+          isLogin: true
+          }
+       })   		
    	}
    	render(){
   		if(this.state.con === false ){

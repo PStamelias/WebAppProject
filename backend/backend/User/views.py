@@ -2,16 +2,16 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from User.models import user,UserInfo
+from User.models import user,UserInfo,AD,Connection_Request,Article
 from rest_framework.exceptions import AuthenticationFailed
-from User.serializers import UserSerializer,UserInfoSerializer
+from User.serializers import UserSerializer,UserInfoSerializer,ADSerializer,PersonADSerializer,ArticleSerializer
 from django.core.exceptions import BadRequest
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, ParseError
-
+import datetime
 
 
 # Create your views here.
@@ -293,10 +293,86 @@ class SearchEmail(APIView):
 class SubmitAd(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
-		Email=request.data['email']
-		Adname=request.data['AdName']
-		TextAd=request.data['TextAd']
-		print(Email)
-		print(Adname)
-		print(TextAd)
-		return Response(status=status.HTTP_200_OK)
+		Email_Address=request.data['Email_Address']
+		NameAD=request.data['NameAD']
+		TextAD=request.data['TextAD']
+		AD=ADSerializer(data=request.data)
+		if AD.is_valid():
+			AD.save()
+			return Response(status=status.HTTP_200_OK)
+		else:
+			raise ValidationError
+
+
+
+
+class GetAds(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print("kala eimaste")
+		Email_Address=request.data["Email_Address"]
+		print(Email_Address)
+		data=[]
+		for e in AD.objects.all():
+			e.Email_Address = e.Email_Address.replace("[", "")
+			e.Email_Address = e.Email_Address.replace("]", "")
+			e.Email_Address = e.Email_Address.replace("'", "")
+			if e.Email_Address==Email_Address:
+				e.TextAD = e.TextAD.replace("[", "")
+				e.TextAD = e.TextAD.replace("]", "")
+				e.TextAD = e.TextAD.replace("'", "")
+				data.append(e.TextAD)
+				e.NameAD = e.NameAD.replace("[", "")
+				e.NameAD = e.NameAD.replace("]", "")
+				e.NameAD = e.NameAD.replace("'", "")
+				data.append(e.NameAD)
+		print(data) 
+		return Response({"keywords":data})
+
+
+
+
+class GetLinks(APIView):
+	permission_classes =[AllowAny]
+	def post(self,request,format=None):
+		print("edw re mounopana")
+		Email_Address=request.data["Email_Address"]
+		data=[]
+		for e in Connection_Request.objects.all():
+			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("[", "")
+			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("]", "")
+			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("'", "")
+			if Email_Address==e.Email_Address_Receiver:
+				e.Email_Address_Sender = e.Email_Address_Sender.replace("[", "")
+				e.Email_Address_Sender = e.Email_Address_Sender.replace("]", "")
+				e.Email_Address_Sender = e.Email_Address_Sender.replace("'", "")
+				data.append(e.Email_Address_Sender)
+				for r in User.objects.all():
+					r.Email_Address = r.Email_Address.replace("[", "")
+					r.Email_Address = r.Email_Address.replace("]", "")
+					r.Email_Address = r.Email_Address.replace("'", "")
+					if Email_Address == r.Email_Address:
+						data.append(r.id)
+		return Response({"keywords":data})
+		
+
+
+
+
+
+
+class PostArticle(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		Email_Address=request.data['Email_Address']
+		TextArticle=request.data['TextArticle']
+		Date=request.data['Current_date']
+		print(Email_Address)
+		print(TextArticle)
+		print(Date)
+		art=ArticleSerializer(data=request.data)
+		if art.is_valid():
+			art.save()
+			return Response(status=status.HTTP_200_OK)
+		else:
+			raise ValidationError
