@@ -32,25 +32,19 @@ class Network extends React.Component {
    		this.setState({user_search:e.target.value})
    	}
    	Search(){
-   	{/* to thema mou einai edw oti otan kanw alert autes edw ts variables den exoune timh*/}
-   		alert("user=",this.state.user_search)
-   		alert("email=",this.state.email_address)
-   		alert("id=",this.state.id)
-   		{/* meta thelw na kanw to e3hs */}
-   		if(this.state.user_search===this.state.email_address){
-   			this.props.history.push({
-	          pathname: "/Network/:"+this.state.id,
-	          state :{
-	          Email : this.state.email_address,
-	          id: this.state.id,
-	          page : "Network",
-	          isLogin: true
-	          }
-       		})
-   		}
-   		{/* to opoio den doulevei akoma kai an oi times itan equal kai empaina st if */}
-   	 	{/* ti ginetai loipon  egw thelw an auto pou dinw st forma einai idio me to email pou pairnw panw stn con
-   	 	structor na mpainei st if kai na re render ton component me ta idia props omws gia na xerw an auto pou dinw einai idio me to email auto */}
+   		alert(this.state.user_search)
+   		alert(this.state.email_address)
+   		this.props.history.push({
+          pathname: "/Result/:"+this.state.id,
+          state :{
+          Email : this.state.email_address,
+          user_search: this.state.user_search,
+          id: this.state.id,
+          typesearch:"No",
+          page : "Ads",
+          isLogin: true
+          }
+       })
    	}
    	render(){
    		if(this.state.con === false ){
@@ -61,14 +55,8 @@ class Network extends React.Component {
    				<div>
    					<Plot name={"Network"} id={this.state.id} email={this.state.email_address}/>
    					<h1>My Network</h1>
-
-   					{/* autes edw oi variables exoun kanonika ti timh pou thelw */}
-   					<h2>{this.state.id}</h2>
-   					<h2>{this.state.email_address}</h2>
-   					<h2>{this.state.user_search}</h2>
-   					{/* autes edw oi variables exoun kanonika ti timh pou thelw */}
    					<form onSubmit={this.Search}>
-	                <label>Search UserEmail:</label>
+	                <label>Search:</label>
 	                <input type="text"  id="search_name" name="search_name" defaultValue={this.state.user_search}  onChange={this.giveValuetosearch} size="61"/>
 	                <br/>
 	                <button class="bte">Submit</button>

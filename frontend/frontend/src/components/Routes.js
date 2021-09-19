@@ -8,6 +8,7 @@ import Settings from './Settings.js'
 import Network from './Network.js'
 import Notifications from './Notifications.js'
 import Discussions from './Discussions.js'
+import Result     from './Result.js'
 import Ads from './Ads.js'
 import Personal from './Personal.js'
 import CheckAds from './CheckAds.js'
@@ -16,19 +17,20 @@ import PersonalInfo from './PersonalInfo.js'
 function Routes() {
   return (
     <div>
-      <Route  exact  path="/"                           component={App}/>
-      <Route  exact  path="/register"                   component={Register}/>
-      <Route         path="/Admin"                      component={AdminPage}/>
-      <Route         path="/UserPage/:id"               component={UserPage}/>
-      <Route         path="/Network/:id"                component={Network}/>
-      <Route         path="/Settings/:id"               component={Settings}/>
-      <Route         path="/Notifications/:id"          component={Notifications}/>
-      <Route         path="/Discussions/:id"            component={Discussions}/>
-      <Route         path="/Personal/:id"               component={Personal}/>
-      <Route         path="/Ads/:id"                    component={Ads}/>
-      <Route         path="/NewAd/"                     component={NewAd}/>
-      <Route         path="/CheckAds/"                  component={CheckAds}/>
-      <Route         path="/PersonalInfo/:id"           component={PersonalInfo}/>
+      <Route  exact  path="/"                             component={App}/>
+      <Route  exact  path="/register"                     component={Register}/>
+      <Route         path="/Admin"                        component={AdminPage}/>
+      <Route         path="/UserPage/:id"                 component={UserPage}/>
+      <Route         path="/Network/:id"                  component={Network}/>
+      <Route         path="/Settings/:id"                 component={Settings}/>
+      <Route         path="/Notifications/:id"            component={Notifications}/>
+      <Route         path="/Discussions/:id"              component={Discussions}/>
+      <Route         path="/Personal/:id"                 component={Personal}/>
+      <Route         path="/Ads/:id"                      component={Ads}/>
+      <Route         path="/NewAd/"                       component={NewAd}/>
+      <Route         path="/CheckAds/"                    component={CheckAds}/>
+      <Route         path="/Result/:id"                   component={Result}/>
+      <Route         path="/PersonalInfo/:id"             component={PersonalInfo}/>
     </div>
   );
 }

@@ -60,6 +60,22 @@ class Article(models.Model):
 	Email_Address        =  models.EmailField(max_length=240)
 	TextArticle          =  models.TextField(null=True)
 	Current_date         =  models.TextField(null=True)
+	NameArticle          =  models.TextField(null=True)
 	Image         		 =  models.FileField(upload_to='article_images',blank=True,null=True)
 	InterestingUsers     =  models.ManyToManyField(PersonArticle,blank=True)
 	CommentUsers         =  models.ManyToManyField(CommentArticle,blank=True)
+
+
+class Friend_List(models.Model):
+	Email_Address        =  models.EmailField(max_length=240)
+
+class Friend_Status(models.Model):
+	Email_Address        =  models.EmailField(max_length=240,unique=True)
+	Friend_List			 =  models.ManyToManyField(Friend_List)
+
+
+
+
+class Friend_Request(models.Model):
+	Email_Address_Sender     =  models.EmailField(max_length=240)
+	Email_Address_Receiver   =  models.EmailField(max_length=240)

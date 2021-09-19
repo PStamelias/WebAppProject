@@ -21,3 +21,14 @@ class PersonADConfig(AppConfig):
 
 class Connection_RequestConfing(AppConfig):
     name= 'Connection_Request'
+
+
+class Friend_ListConfig(AppConfig):
+    name='Friend_List'
+
+class Friend_StatusConfig(AppConfig):
+    name='Friend_Status'
+
+
+class Friend_RequestConfig(AppConfig):
+    name='Friend_Request'

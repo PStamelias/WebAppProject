@@ -51,7 +51,7 @@ class PersonalInfo  extends React.Component {
          this.setState({Skills:response.data[7]});
 
       }).catch(error => {
-            alert("Something went wrong")
+          alert("Something went wrong")
       })
     }
   	render() {

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import user,UserInfo,AD,PersonAD,Connection_Request,PersonArticle,CommentArticle,Article
+from .models import user,UserInfo,AD,PersonAD,Connection_Request,PersonArticle,CommentArticle,Article,Friend_List,Friend_Status,Friend_Request
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -142,3 +142,31 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 
+class Friend_ListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Friend_List
+        fields =   '__all__'
+
+    def run_validation(self, value):
+        print("mpika edw kiria mou")
+        return value
+
+
+
+class Friend_StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Friend_Status
+        fields =   '__all__'
+    
+    def run_validation(self, value):
+        print("mpika edw kiria mou")
+        return value
+
+
+class Friend_RequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Friend_Request
+        fields =   '__all__'
+    def run_validation(self, value):
+        print("mpika edw kiria mou")
+        return value

@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from User.models import user,UserInfo,AD,Connection_Request,Article
+from User.models import user,UserInfo,AD,Connection_Request,Article,Friend_List,Friend_Status,Friend_Request
 from rest_framework.exceptions import AuthenticationFailed
-from User.serializers import UserSerializer,UserInfoSerializer,ADSerializer,PersonADSerializer,ArticleSerializer
+from User.serializers import UserSerializer,UserInfoSerializer,ADSerializer,PersonADSerializer,ArticleSerializer,Friend_RequestSerializer
 from django.core.exceptions import BadRequest
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -338,21 +338,22 @@ class GetLinks(APIView):
 		print("edw re mounopana")
 		Email_Address=request.data["Email_Address"]
 		data=[]
-		for e in Connection_Request.objects.all():
-			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("[", "")
-			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("]", "")
-			e.Email_Address_Receiver = e.Email_Address_Receiver.replace("'", "")
-			if Email_Address==e.Email_Address_Receiver:
-				e.Email_Address_Sender = e.Email_Address_Sender.replace("[", "")
-				e.Email_Address_Sender = e.Email_Address_Sender.replace("]", "")
-				e.Email_Address_Sender = e.Email_Address_Sender.replace("'", "")
-				data.append(e.Email_Address_Sender)
-				for r in User.objects.all():
-					r.Email_Address = r.Email_Address.replace("[", "")
-					r.Email_Address = r.Email_Address.replace("]", "")
-					r.Email_Address = r.Email_Address.replace("'", "")
-					if Email_Address == r.Email_Address:
-						data.append(r.id)
+		for r in Friend_Request.objects.all():
+			r.Email_Address_Receiver = r.Email_Address_Receiver.replace("[", "")
+			r.Email_Address_Receiver = r.Email_Address_Receiver.replace("]", "")
+			r.Email_Address_Receiver = r.Email_Address_Receiver.replace("'", "")
+			if r.Email_Address_Receiver==Email_Address:
+				r.Email_Address_Sender = r.Email_Address_Sender.replace("[", "")
+				r.Email_Address_Sender = r.Email_Address_Sender.replace("]", "")
+				r.Email_Address_Sender = r.Email_Address_Sender.replace("'", "")
+				data.append(r.Email_Address_Sender)
+				for k in user.objects.all():
+					k.Email_Address = k.Email_Address.replace("[", "")
+					k.Email_Address = k.Email_Address.replace("]", "")
+					k.Email_Address = k.Email_Address.replace("'", "")
+					if k.Email_Address==r.Email_Address_Sender:
+						data.append(k.id)
+						break
 		return Response({"keywords":data})
 		
 
@@ -373,6 +374,107 @@ class PostArticle(APIView):
 		art=ArticleSerializer(data=request.data)
 		if art.is_valid():
 			art.save()
+			return Response(status=status.HTTP_200_OK)
+		else:
+			raise ValidationError
+
+
+
+
+
+class getMyArticles(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		Email_Address=request.data['Email_Address']
+		print(Email_Address)
+		data=[]
+		for e in Article.objects.all():
+			e.Email_Address = e.Email_Address.replace("[", "")
+			e.Email_Address = e.Email_Address.replace("]", "")
+			e.Email_Address = e.Email_Address.replace("'", "")
+			if e.Email_Address==Email_Address:
+				e.Current_date = e.Current_date.replace("[", "")
+				e.Current_date = e.Current_date.replace("]", "")
+				e.Current_date = e.Current_date.replace("'", "")
+				data.append(e.Current_date)
+				e.TextArticle = e.TextArticle.replace("[", "")
+				e.TextArticle = e.TextArticle.replace("]", "")
+				e.TextArticle = e.TextArticle.replace("'", "")
+				data.append(e.TextArticle)
+				e.NameArticle = e.NameArticle.replace("[", "")
+				e.NameArticle = e.NameArticle.replace("]", "")
+				e.NameArticle = e.NameArticle.replace("'", "")
+				data.append(e.NameArticle)
+		my_list=[]
+		data.reverse()
+		print(data)
+		print("---------------------------------------------")
+		for k in data:
+			print(k)
+		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+class CheckIfFriend(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		print("mpika edw kiria mou pou nomizeis")
+		Email_Address=request.data['Email_Address']
+		search_value=request.data['Email_Address_Search']
+		done=False
+		for e in Friend_Status.objects.all():
+			e.Email_Address = e.Email_Address.replace("[", "")
+			e.Email_Address = e.Email_Address.replace("]", "")
+			e.Email_Address = e.Email_Address.replace("'", "")
+			if e.Email_Address==Email_Address:
+				for k in e.Friend_List.objects.all():
+					if k.Email_Address==search_value:
+						done=True
+						break
+		print("done=",done)
+		if done==True:
+			return Response("Yes")
+		else:
+			raise ValidationError
+
+
+
+
+class CheckIfExists(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		Email_Address=request.data['Email_Address']
+		done=False
+		print("enter edw pera re mounopana")
+		for e in user.objects.all():
+			e.Email_Address = e.Email_Address.replace("[", "")
+			e.Email_Address = e.Email_Address.replace("]", "")
+			e.Email_Address = e.Email_Address.replace("'", "")
+			if e.Email_Address==Email_Address:
+				done=True
+				break
+		if done==True:
+			return Response("Exists")
+		else:
+			raise ValidationError
+
+
+
+
+
+
+class Send_Request(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		New_Request=Friend_RequestSerializer(data=request.data)
+		print("kala eimaste")
+		if New_Request.is_valid():
+			New_Request.save()
 			return Response(status=status.HTTP_200_OK)
 		else:
 			raise ValidationError

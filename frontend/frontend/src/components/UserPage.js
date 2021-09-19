@@ -15,6 +15,8 @@ class UserPage  extends React.Component {
       		name:"Nothing",
       		surname:"",
       		email_address:"",
+          nameArticle:"",
+          Articles:[],
       		Phone_Number: "",
       		Biography: "",
           Article:"",
@@ -36,6 +38,8 @@ class UserPage  extends React.Component {
     	this.getData = this.getData.bind(this);
       this.handleText=this.handleText.bind(this);
       this.SendArticle=this.SendArticle.bind(this);
+      this.handleName=this.handleName.bind(this);
+      this.getArticles=this.getArticles.bind(this);
   	}
   	getData(){
       alert("Enter on getData")
@@ -57,17 +61,31 @@ class UserPage  extends React.Component {
     handleText(e){
       this.setState({Article: e.target.value});
     }
+    handleName(e){
+      this.setState({nameArticle: e.target.value});
+    }
     SendArticle(){
       const formData=new FormData()
       var myCurrentDate = new Date();
       var date = myCurrentDate.getFullYear() + '-' + (myCurrentDate.getMonth()+1) + '-' + myCurrentDate.getDate() +' '+ myCurrentDate.getHours()+':'+ myCurrentDate.getMinutes();
       formData.append("Email_Address",this.state.email_address)
       formData.append("TextArticle",this.state.Article)
+      formData.append("NameArticle",this.state.nameArticle)
       formData.append("Current_date",date)
       alert("mpainw edw st sendarticle ")
       axios.post('http://127.0.0.1:8000/users/PostArticle/',formData,{headers: {'Content-Type': 'application/json'}})
       .then(response => {
         alert("Article posted Successfully")  
+      }).catch(error => {
+        alert("Something went wrong")
+      })
+    }
+    getArticles(){
+      const formData=new FormData()
+      formData.append("Email_Address",this.state.email_address)
+      axios.post('http://127.0.0.1:8000/users/getMyArticles/',formData,{headers: {'Content-Type': 'application/json'}})
+      .then(response => {
+        this.setState({Articles:response.data["keywords"]});
       }).catch(error => {
         alert("Something went wrong")
       })
@@ -79,14 +97,28 @@ class UserPage  extends React.Component {
   		else{
   			if(this.state.name === "Nothing"){
   				this.getData()
+          this.getArticles()
   			}
+        const items=[]
+        for (let i = 0; i < this.state.Articles.length; ) {
+          items.push(<p>Name:{this.state.Articles[i]}</p>)
+          items.push(<p>Text:{this.state.Articles[i+1]}</p>)
+          items.push(<p>Date:{this.state.Articles[i+2]}</p>)
+          items.push(<p>------------------</p>)
+          i=i+3
+        }
   			return(
           <div id="main">
           <Plot name={"Main_Page"} id={this.state.id} email={this.state.email_address}/>
           <Info name={this.state.name} email_address={this.state.email_address} surname={this.state.surname} Phone_Number={this.state.Phone_Number}/>
           <div class="right">
+          <h3>My Articles</h3>
+          {items}
           <form onSubmit={this.SendArticle}>
-          <h3>New Article</h3>
+          <h4>Submit New Article</h4>
+          <label>Name of Article:</label>
+          <textarea id="ArticleName" name="ArticleName" defaultValue={this.state.nameArticle}  onChange={this.handleName} rows="1" cols="50"></textarea>
+          <label>Text of Article:</label>
           <textarea id="Article" name="Article" defaultValue={this.state.Article}  onChange={this.handleText} rows="10" cols="116"></textarea>
           <button>Submit</button>
           </form>

@@ -8,6 +8,7 @@ import Plot from './Plot.js'
 import {Route,PrivateRoute} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
+import './Notifications.css'
 class Notifications extends React.Component {
 	constructor(props) {
    		super(props);
@@ -27,7 +28,6 @@ class Notifications extends React.Component {
     		this.state.id=props.location.state.id
     	}
     	this.getLinks=this.getLinks.bind(this);
-    	this.some=this.some.bind(this);
    	}
    	getLinks(){
    		const formData=new FormData()
@@ -40,6 +40,12 @@ class Notifications extends React.Component {
         })
         this.setState({name:"Other"});
    	}
+   	Accept(){
+   		
+   	}
+   	Reject(){
+
+   	}
    	render(){
   		if(this.state.con === false ){
   			return (<Redirect to='/'/>);
@@ -48,15 +54,23 @@ class Notifications extends React.Component {
   			if(this.state.name=="Nothing"){
   				this.getLinks()
   			}
-  			const Connection_Requests=[]
-  			for (let i = 0; i < this.state.LinkData.length-1; i++) {
-  				
+  			const items=[]
+  			for (let i = 0; i < this.state.LinkData.length-1;) {
+  				items.push(<Link
+					  to={{
+					    pathname: "/PersonalInfo/:"+this.state.LinkData[i+1],
+					    state: { email: this.state.LinkData[i], id: this.state.LinkData[i+1]}
+					  }}>{this.state.LinkData[i]}</Link>)
+					 items.push(<form onSubmit={this.Accept}><button class="test1">Accept</button></form>)
+					 items.push(<form onSubmit={this.Reject}><button class="test2">Reject</button></form>)
+					 items.push(<br/>)
+				i=i+2
   			}
 	   		return(
 	   			<div>
 	   				<Plot name={"Notifications"} id={this.state.id} email={this.state.email_address}/>
 	   				<h2>Connection_Requests</h2>
-	   				{Connection_Requests}
+	   				{items}
 	   				
 	   			</div>
 	   		);

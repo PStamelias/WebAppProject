@@ -18,5 +18,9 @@ urlpatterns = [
     path('GetAds/',GetAds.as_view()),
     path('SubmitAd/',SubmitAd.as_view()),
     path('GetLinks/',GetLinks.as_view()),
-    path('PostArticle/',PostArticle.as_view())
+    path('getMyArticles/',getMyArticles.as_view()),
+    path('CheckIfExists/',CheckIfExists.as_view()),
+    path('PostArticle/',PostArticle.as_view()),
+    path('Send_Request/',Send_Request.as_view()),
+    path('CheckIfFriend/',CheckIfFriend.as_view())
 ]
