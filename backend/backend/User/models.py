@@ -30,15 +30,11 @@ class UserInfo(models.Model):
 
 
 
-class PersonAD(models.Model):
-	Email_Address    = models.EmailField(max_length=240,unique=True)
-
-
 class AD(models.Model):
 	Email_Address    =  models.EmailField(max_length=240)
 	NameAD           =  models.CharField(max_length=240,null=True)
 	TextAD           =  models.TextField(null=True)
-	ApplicationUsers =  models.ManyToManyField(PersonAD,blank=True)
+	ApplicationUsers =  models.TextField(null=True)
 
 
 
@@ -48,30 +44,19 @@ class Connection_Request(models.Model):
 
 
 
-class PersonArticle(models.Model):
-	Email_Address        = models.EmailField(max_length=240)
-	Interesting			 = models.CharField(max_length=4)
-
-class CommentArticle(models.Model):
-	Email_Address        = models.EmailField(max_length=240)
-	Comment              = models.TextField(null=True)
-
 class Article(models.Model):
 	Email_Address        =  models.EmailField(max_length=240)
 	TextArticle          =  models.TextField(null=True)
 	Current_date         =  models.TextField(null=True)
 	NameArticle          =  models.TextField(null=True)
 	Image         		 =  models.FileField(upload_to='article_images',blank=True,null=True)
-	InterestingUsers     =  models.ManyToManyField(PersonArticle,blank=True)
-	CommentUsers         =  models.ManyToManyField(CommentArticle,blank=True)
+	InterestingUsers     =  models.TextField(null=True)
+	CommentUsers         =  models.TextField(null=True)
 
-
-class Friend_List(models.Model):
-	Email_Address        =  models.EmailField(max_length=240)
 
 class Friend_Status(models.Model):
-	Email_Address        =  models.EmailField(max_length=240,unique=True)
-	Friend_List			 =  models.ManyToManyField(Friend_List)
+	Email_Address        =  models.EmailField(max_length=240,null=True)
+	Friend_List          =  models.TextField(null=True)
 
 
 

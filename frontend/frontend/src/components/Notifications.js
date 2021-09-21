@@ -18,6 +18,7 @@ class Notifications extends React.Component {
 	     	LinkData:[],
 	     	name:"Nothing",
 	     	con:false,
+	     	element:"",
 	    };
    		if(props.location.state == null){
     		this.state.con=false	
@@ -27,7 +28,9 @@ class Notifications extends React.Component {
     		this.state.email_address=props.location.state.Email
     		this.state.id=props.location.state.id
     	}
-    	this.getLinks=this.getLinks.bind(this);
+    	this.getLinks=this.getLinks.bind(this)
+    	this.Accept=this.Accept.bind(this)
+    	this.Reject=this.Reject.bind(this)
    	}
    	getLinks(){
    		const formData=new FormData()
@@ -41,10 +44,47 @@ class Notifications extends React.Component {
         this.setState({name:"Other"});
    	}
    	Accept(){
-   		
+   		alert("enter st Accept")
+   		alert(this.state.element)
+   		const formData=new FormData()
+   		formData.append("Email_Address_Receiver",this.state.email_address)
+   		formData.append("Email_Address_Sender",this.state.element)
+   		axios.post('http://127.0.0.1:8000/users/RejectRequest/',formData,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	
+        }).catch(error => {
+            alert("Something went wrong")
+        })
+        const formData1=new FormData()
+        formData1.append("Email_Address",this.state.email_address)
+        axios.post('http://127.0.0.1:8000/users/AcceptRequest/',formData1,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	
+        }).catch(error => {
+            alert("Something went wrong")
+        })
+        axios.post('http://127.0.0.1:8000/users/AcceptRequestRoundTwo/',formData,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	
+        }).catch(error => {
+            alert("Something went wrong")
+        })
    	}
    	Reject(){
-
+   		alert("enter st reject")
+   		alert(this.state.element)
+   		const formData=new FormData()
+   		formData.append("Email_Address_Receiver",this.state.email_address)
+   		formData.append("Email_Address_Sender",this.state.element)
+   		axios.post('http://127.0.0.1:8000/users/RejectRequest/',formData,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	
+        }).catch(error => {
+            alert("Something went wrong")
+        })
+   	}	
+   	handleClick = (param1) => (event) => {
+   		this.setState({element:param1});
    	}
    	render(){
   		if(this.state.con === false ){
@@ -61,8 +101,8 @@ class Notifications extends React.Component {
 					    pathname: "/PersonalInfo/:"+this.state.LinkData[i+1],
 					    state: { email: this.state.LinkData[i], id: this.state.LinkData[i+1]}
 					  }}>{this.state.LinkData[i]}</Link>)
-					 items.push(<form onSubmit={this.Accept}><button class="test1">Accept</button></form>)
-					 items.push(<form onSubmit={this.Reject}><button class="test2">Reject</button></form>)
+					 items.push(<form onSubmit={this.Accept}><button  onClick={this.handleClick(this.state.LinkData[i])} class="test1">Accept</button></form>)
+					 items.push(<form onSubmit={this.Reject}><button  onClick={this.handleClick(this.state.LinkData[i])} class="test2">Reject</button></form>)
 					 items.push(<br/>)
 				i=i+2
   			}
@@ -71,7 +111,6 @@ class Notifications extends React.Component {
 	   				<Plot name={"Notifications"} id={this.state.id} email={this.state.email_address}/>
 	   				<h2>Connection_Requests</h2>
 	   				{items}
-	   				
 	   			</div>
 	   		);
    		}

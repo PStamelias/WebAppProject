@@ -22,5 +22,11 @@ urlpatterns = [
     path('CheckIfExists/',CheckIfExists.as_view()),
     path('PostArticle/',PostArticle.as_view()),
     path('Send_Request/',Send_Request.as_view()),
+    path('RejectRequest/',RejectRequest.as_view()),
+    path('GetAdsFromFriends/',GetAdsFromFriends.as_view()),
+    path('GetAdsFromOthers/',GetAdsFromOthers.as_view()),
+    path('AcceptRequest/',AcceptRequest.as_view()),
+    path('GetFriends/',GetFriends.as_view()),
+    path('AcceptRequestRoundTwo/',AcceptRequestRoundTwo.as_view()),
     path('CheckIfFriend/',CheckIfFriend.as_view())
 ]

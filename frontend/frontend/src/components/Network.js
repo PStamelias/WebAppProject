@@ -16,6 +16,8 @@ class Network extends React.Component {
 	     	id:-1,
 	     	con:false,
 	     	user_search:"",
+	     	name:"Nothing",
+	     	Usersdata:[],
 	    };
    		if(props.location.state == null){
     		this.state.con=false	
@@ -27,6 +29,7 @@ class Network extends React.Component {
     	}
     	this.giveValuetosearch=this.giveValuetosearch.bind(this);
     	this.Search=this.Search.bind(this);
+    	this.getData=this.getData.bind(this);
    	}
    	giveValuetosearch(e){
    		this.setState({user_search:e.target.value})
@@ -46,15 +49,49 @@ class Network extends React.Component {
           }
        })
    	}
+   	getData(){
+   		const formData=new FormData()
+   		formData.append("Email_Address",this.state.email_address)
+   		axios.post('http://127.0.0.1:8000/users/GetFriends/',formData,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	this.setState({Usersdata:response.data["keywords"]});
+        }).catch(error => {
+            alert("Something went wrong")
+        })
+        this.setState({name:"Other"});
+   	}
    	render(){
    		if(this.state.con === false ){
   			return (<Redirect to='/'/>);
   		}
    		else{
+   			if(this.state.name=="Nothing"){
+   				this.getData()
+   			}
+   			const items=[]
+   			for (let i = 0; i < this.state.Usersdata.length;) {
+   				items.push(<div class="grid-item">
+   					<p>Nikos Oikonomopoulos</p>
+   					<Link
+					  to={{
+					    pathname: "/PersonalInfo/:"+this.state.Usersdata[i+1],
+					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
+					  }}>{this.state.Usersdata[i+2]}</Link>,{this.state.Usersdata[i+3]},{this.state.Usersdata[i+4]}</div>)
+   				i=i+5
+   			}
    			return(
    				<div>
    					<Plot name={"Network"} id={this.state.id} email={this.state.email_address}/>
    					<h1>My Network</h1>
+   					<div class="grid-container">
+   					{items}
+   					</div>
+   					<br/>
+   					<br/>
+   					<br/>
+   					<br/>
+   					<br/>
+   					<br/>
    					<form onSubmit={this.Search}>
 	                <label>Search:</label>
 	                <input type="text"  id="search_name" name="search_name" defaultValue={this.state.user_search}  onChange={this.giveValuetosearch} size="61"/>

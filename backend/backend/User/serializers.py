@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import user,UserInfo,AD,PersonAD,Connection_Request,PersonArticle,CommentArticle,Article,Friend_List,Friend_Status,Friend_Request
+from .models import user,UserInfo,AD,Connection_Request,Article,Friend_Status,Friend_Request
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -89,13 +89,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
         return value
 
 
-class PersonADSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = PersonAD
-        fields = '__all__'
-
-    def run_validation(self, value):
-        return value
+ 
 
 class ADSerializer(serializers.ModelSerializer):
     class Meta:
@@ -117,16 +111,7 @@ class Connection_RequestSerializer(serializers.ModelSerializer):
 
 
 
-class PersonArticleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = PersonArticle
-        fields = '__all__'
 
-
-class CommentArticleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = CommentArticle
-        fields = '__all__'
 
 
 
@@ -142,15 +127,6 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 
-class Friend_ListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = Friend_List
-        fields =   '__all__'
-
-    def run_validation(self, value):
-        print("mpika edw kiria mou")
-        return value
-
 
 
 class Friend_StatusSerializer(serializers.ModelSerializer):
@@ -159,7 +135,6 @@ class Friend_StatusSerializer(serializers.ModelSerializer):
         fields =   '__all__'
     
     def run_validation(self, value):
-        print("mpika edw kiria mou")
         return value
 
 
@@ -167,6 +142,7 @@ class Friend_RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Friend_Request
         fields =   '__all__'
+
     def run_validation(self, value):
         print("mpika edw kiria mou")
         return value
