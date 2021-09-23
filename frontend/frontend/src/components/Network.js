@@ -71,13 +71,18 @@ class Network extends React.Component {
    			const items=[]
    			for (let i = 0; i < this.state.Usersdata.length;) {
    				items.push(<div class="grid-item">
-   					<p>Nikos Oikonomopoulos</p>
+   					<Link
+					  to={{
+					    pathname: "/Discussions/:"+this.state.Usersdata[i+1],
+					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
+					  }}><p>Start Discussion</p></Link>
+   					<br/>
    					<Link
 					  to={{
 					    pathname: "/PersonalInfo/:"+this.state.Usersdata[i+1],
 					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
-					  }}>{this.state.Usersdata[i+2]}</Link>,{this.state.Usersdata[i+3]},{this.state.Usersdata[i+4]}</div>)
-   				i=i+5
+					  }}>{this.state.Usersdata[i+2]}</Link>,{this.state.Usersdata[i+3]}</div>)
+   				i=i+4
    			}
    			return(
    				<div>
@@ -92,6 +97,7 @@ class Network extends React.Component {
    					<br/>
    					<br/>
    					<br/>
+   					<h3>Search User</h3>
    					<form onSubmit={this.Search}>
 	                <label>Search:</label>
 	                <input type="text"  id="search_name" name="search_name" defaultValue={this.state.user_search}  onChange={this.giveValuetosearch} size="61"/>

@@ -16,3 +16,15 @@
   height:40px;
   width:90px;
 }
+.bClass{
+  height:60px;
+  width:80px;
+}
+
+.MyMode{
+  background-color: lightgrey;
+  width: 300px;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}

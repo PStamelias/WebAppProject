@@ -451,15 +451,28 @@ class CheckIfFriend(APIView):
 		Email_Address=request.data['Email_Address']
 		search_value=request.data['Email_Address_Search']
 		done=False
+		users=[]
+		stringbuild=""
+		mystring=""
 		for e in Friend_Status.objects.all():
 			e.Email_Address = e.Email_Address.replace("[", "")
 			e.Email_Address = e.Email_Address.replace("]", "")
 			e.Email_Address = e.Email_Address.replace("'", "")
 			if e.Email_Address==Email_Address:
-				for k in e.Friend_List.objects.all():
-					if k.Email_Address==search_value:
-						done=True
-						break
+				mystring=e.Friend_List
+				break
+
+		for k in range(0,len(mystring)):
+			if mystring[k]=='-':
+				if stringbuild!="None":
+					users.append(stringbuild)
+				stringbuild=""
+			else:
+				stringbuild=stringbuild+mystring[k]
+		for us in users:
+			if us==search_value:
+				done=True
+				break
 		print("done=",done)
 		if done==True:
 			return Response("Yes")
@@ -541,7 +554,7 @@ class AcceptRequest(APIView):
 	def post(self,request,format=None):
 		print("Enter on Accept")
 		Email_Address=request.data['Email_Address']
-		print(Email_Address)
+		print("dimiourgw gia email pou exei filous=",Email_Address)
 		done=False
 		for e in Friend_Status.objects.all():
 			e.Email_Address = e.Email_Address.replace("[", "")
@@ -550,7 +563,9 @@ class AcceptRequest(APIView):
 			if e.Email_Address==Email_Address:
 				done=True
 				break
+		print(done)
 		if done==False:
+			print("eftaixa email")
 			Fr=Friend_StatusSerializer(data=request.data)
 			Fr.Friend_List=""
 			if Fr.is_valid():
@@ -568,7 +583,11 @@ class AcceptRequestRoundTwo(APIView):
 		val=-1
 		Email_Address=request.data['Email_Address_Receiver']
 		Email_Address_Sender=request.data['Email_Address_Sender']
+		print("Sender=",Email_Address_Sender)
+		print("Receiver=",Email_Address)
 		for e in Friend_Status.objects.all():
+			print("two=",e.Email_Address)
+			print("one=",Email_Address)
 			e.Email_Address = e.Email_Address.replace("[", "")
 			e.Email_Address = e.Email_Address.replace("]", "")
 			e.Email_Address = e.Email_Address.replace("'", "")
@@ -577,6 +596,7 @@ class AcceptRequestRoundTwo(APIView):
 				break
 		print(val)
 		t = Friend_Status.objects.get(id=val)
+		print("exei mesa o receeiver=",t.Friend_List)
 		t.Friend_List=str(t.Friend_List)+"-"+Email_Address_Sender
 		t.save()
 		return Response(status=status.HTTP_200_OK)
@@ -615,7 +635,14 @@ class GetAdsFromFriends(APIView):
 				k.Email_Address = k.Email_Address.replace("]", "")
 				k.Email_Address = k.Email_Address.replace("'", "")
 				if us==k.Email_Address:
+					data.append(k.Email_Address)
+					k.NameAD = k.NameAD.replace("[", "")
+					k.NameAD = k.NameAD.replace("]", "")
+					k.NameAD = k.NameAD.replace("'", "")
 					data.append(k.NameAD)
+					k.TextAD = k.TextAD.replace("[", "")
+					k.TextAD = k.TextAD.replace("]", "")
+					k.TextAD = k.TextAD.replace("'", "")
 					data.append(k.TextAD)
 					data.append(k.ApplicationUsers)
 		print("data")
@@ -641,6 +668,8 @@ class GetAdsFromOthers(APIView):
 			if e.Email_Address==Email_Address:
 				mystring=e.Friend_List
 				break
+		if mystring=="None":
+			return Response({"keywords":data})
 		for k in range(0,len(mystring)):
 			if mystring[k]=='-':
 				if stringbuild!="None":
@@ -648,14 +677,40 @@ class GetAdsFromOthers(APIView):
 				stringbuild=""
 			else:
 				stringbuild=stringbuild+mystring[k]
-		print("USERS")
+		print("USERS edw")
+		if not users:
+			for k in AD.objects.all():
+				k.Email_Address = k.Email_Address.replace("[", "")
+				k.Email_Address = k.Email_Address.replace("]", "")
+				k.Email_Address = k.Email_Address.replace("'", "")
+				print("mpika")
+				data.append(k.Email_Address)
+				k.NameAD = k.NameAD.replace("[", "")
+				k.NameAD = k.NameAD.replace("]", "")
+				k.NameAD = k.NameAD.replace("'", "")
+				data.append(k.NameAD)
+				k.TextAD = k.TextAD.replace("[", "")
+				k.TextAD = k.TextAD.replace("]", "")
+				k.TextAD = k.TextAD.replace("'", "")
+				data.append(k.TextAD)
+				data.append(k.ApplicationUsers)
+			return Response({"keywords":data})
 		for us in users:
+			print("kala")
 			for k in AD.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
 				k.Email_Address = k.Email_Address.replace("'", "")
 				if us!=k.Email_Address:
+					print("mpika")
+					data.append(k.Email_Address)
+					k.NameAD = k.NameAD.replace("[", "")
+					k.NameAD = k.NameAD.replace("]", "")
+					k.NameAD = k.NameAD.replace("'", "")
 					data.append(k.NameAD)
+					k.TextAD = k.TextAD.replace("[", "")
+					k.TextAD = k.TextAD.replace("]", "")
+					k.TextAD = k.TextAD.replace("'", "")
 					data.append(k.TextAD)
 					data.append(k.ApplicationUsers)
 		return Response({"keywords":data})
@@ -673,21 +728,23 @@ class GetFriends(APIView):
 		mystring=""
 		stringbuild=""
 		Email_Address=request.data['Email_Address']
+		print("psaxnw tous filous tou ",Email_Address)
 		for e in Friend_Status.objects.all():
 			e.Email_Address = e.Email_Address.replace("[", "")
 			e.Email_Address = e.Email_Address.replace("]", "")
 			e.Email_Address = e.Email_Address.replace("'", "")
 			if e.Email_Address==Email_Address:
 				mystring=e.Friend_List
+				print("mystring=",mystring)
 				break
-		for k in range(0,len(mystring)):
-			if mystring[k]=='-':
-				if stringbuild!="None":
-					users.append(stringbuild)
-				stringbuild=""
-			else:
-				stringbuild=stringbuild+mystring[k]
+		if mystring==None:
+			print("mpika edwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+			return Response({"keywords":data})
+		users = mystring.split('-')
+		print(users)
+		print("users=",users)
 		for us in users:
+			print("us=",us)
 			for k in user.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
@@ -708,13 +765,352 @@ class GetFriends(APIView):
 						e.Email_Address = e.Email_Address.replace("]", "")
 						e.Email_Address = e.Email_Address.replace("'", "")
 						if e.Email_Address==k.Email_Address:
-							k.Professional_Experience = k.Professional_Experience.replace("[", "")
-							k.Professional_Experience = k.Professional_Experience.replace("]", "")
-							k.Professional_Experience = k.Professional_Experience.replace("'", "")
-							data.append(k.Professional_Experience)
-							k.Skills = k.Skills.replace("[", "")
-							k.Skills = k.Skills.replace("]", "")
-							k.Skills = k.Skills.replace("'", "")
-							data.append(k.Skills)
+							e.Professional_Experience = e.Professional_Experience.replace("[", "")
+							e.Professional_Experience = e.Professional_Experience.replace("]", "")
+							e.Professional_Experience = e.Professional_Experience.replace("'", "")
+							print("prof")
+							print(e.Professional_Experience)
+							data.append(e.Professional_Experience)
+							e.Skills = e.Skills.replace("[", "")
+							e.Skills = e.Skills.replace("]", "")
+							e.Skills = e.Skills.replace("'", "")
+							print("skills")
+							print(e.Skills)
+							data.append(e.Skills)
 							break
+		print(data)
 		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class ReturnId(APIView):
+	permission_classes=[AllowAny]
+	def post(self,request,format=None):
+		my_id=-1
+		Email_Address_Search=request.data['Email_Address_Search']
+		for e in user.objects.all():
+			e.Email_Address = e.Email_Address.replace("[", "")
+			e.Email_Address = e.Email_Address.replace("]", "")
+			e.Email_Address = e.Email_Address.replace("'", "")
+			if e.Email_Address==Email_Address_Search:
+				my_id=e.id
+				break
+		return Response(my_id)
+
+
+
+
+
+class GetAllInfoNonSecret(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		print(request.data['Email_Address'])
+		for p in user.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==request.data['Email_Address']:
+				data.append(p.Email_Address)
+				p.Name = p.Name.replace("[", "")
+				p.Name = p.Name.replace("]", "")
+				p.Name = p.Name.replace("'", "")
+				data.append(p.Name)
+				p.Surname = p.Surname.replace("[", "")
+				p.Surname = p.Surname.replace("]", "")
+				p.Surname = p.Surname.replace("'", "")
+				data.append(p.Surname)
+				p.Phone_Number = p.Phone_Number.replace("[", "")
+				p.Phone_Number = p.Phone_Number.replace("]", "")
+				p.Phone_Number = p.Phone_Number.replace("'", "")
+				data.append(p.Phone_Number)
+				if p.Biography is not None:
+					p.Biography = p.Biography.replace("[", "")
+					p.Biography = p.Biography.replace("]", "")
+					p.Biography = p.Biography.replace("'", "")
+					data.append(p.Biography)
+				else:
+					data.append("")
+				break
+		for p in UserInfo.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			print("p.email=",p.Email_Address)
+			print(request.data['Email_Address'])
+			if p.Email_Address==request.data['Email_Address']:
+				p.Professional_Experience = p.Professional_Experience.replace("[", "")
+				p.Professional_Experience = p.Professional_Experience.replace("]", "")
+				p.Professional_Experience = p.Professional_Experience.replace("'", "")
+				print("value on prof=",p.PrivateProf_Experience)
+				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("[", "")
+				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("]", "")
+				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("'", "")
+				data.append(p.Professional_Experience)
+				p.Education = p.Education.replace("[", "")
+				p.Education = p.Education.replace("]", "")
+				p.Education = p.Education.replace("'", "")
+				p.PrivateEducation = p.PrivateEducation.replace("[", "")
+				p.PrivateEducation = p.PrivateEducation.replace("]", "")
+				p.PrivateEducation = p.PrivateEducation.replace("'", "")
+				data.append(p.Education)
+				p.Skills = p.Skills.replace("[", "")
+				p.Skills = p.Skills.replace("]", "")
+				p.Skills = p.Skills.replace("'", "")
+				p.PrivateSkills = p.PrivateSkills.replace("[", "")
+				p.PrivateSkills = p.PrivateSkills.replace("]", "")
+				p.PrivateSkills = p.PrivateSkills.replace("'", "")
+				data.append(p.Skills)
+		print(data)
+		return Response(data)
+
+
+
+
+
+
+
+class SendReqAd(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print("SendReqAd")
+		Email_Address=request.data['Email_Address']
+		NameAD=request.data['NameAD']
+		TextAD=request.data['TextAD']
+		ApplicationUser=request.data['ApplicationUser']
+		print(Email_Address)
+		print(NameAD)
+		val=-1
+		print(TextAD)
+		print(ApplicationUser)
+		for k in AD.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			k.NameAD = k.NameAD.replace("[", "")
+			k.NameAD = k.NameAD.replace("]", "")
+			k.NameAD = k.NameAD.replace("'", "")
+			k.TextAD = k.TextAD.replace("[", "")
+			k.TextAD = k.TextAD.replace("]", "")
+			k.TextAD = k.TextAD.replace("'", "")
+			if k.Email_Address==Email_Address and k.NameAD==NameAD and k.TextAD==TextAD:
+				val=k.id
+		t = AD.objects.get(id=val)
+		t.ApplicationUsers=str(t.ApplicationUsers)+"-"+ApplicationUser
+		t.save()
+		return Response(status=status.HTTP_200_OK)
+
+
+
+
+class GetLikes(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print("enter likes")
+		mystring=""
+		data=[]
+		users=[]
+		Email_Address=request.data['Email_Address']
+		print(Email_Address)
+		for k in Article.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			if k.Email_Address==Email_Address:
+				mystring=k.InterestingUsers
+				break
+		if not mystring:
+			return Response({"keywords":data})
+		users = mystring.split('-')
+		print(users)
+		for us in users:
+			data.append(us)
+		return Response({"keywords":data})
+
+
+
+class GetComments(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		print("enter comments")
+		data=[]
+		stringuser=""
+		users=[]
+		stringscom=""
+		Email_Address=request.data['Email_Address']
+		for k in Article.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			if k.Email_Address==Email_Address:
+				stringuser=k.CommentUsers
+				stringscom=k.Comments
+				break
+		users =   stringuser.split('-')
+		com   =   stringscom.split('-')
+		for i in range(0,len(users)):
+			data.append(users[i])
+			data.append(com[i])
+		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class getFrArticles(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		users=[]
+		mystring=""
+		Email_Address=request.data['Email_Address']
+		print("email pou psaxnw")
+		print(Email_Address)
+		for k in Friend_Status.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			if k.Email_Address==Email_Address:
+				print("mpika retetet")
+				mystring=k.Friend_List
+				break
+		print("eeee=",mystring)
+		if not mystring:
+			print("mpainei edw")
+			return Response({"keywords":data})
+		users =   mystring.split('-')
+		print("getFrArticles")
+		print("users")
+		print(users)
+		for us in users:
+			for k in Article.objects.all():
+				k.Email_Address = k.Email_Address.replace("[", "")
+				k.Email_Address = k.Email_Address.replace("]", "")
+				k.Email_Address = k.Email_Address.replace("'", "")
+				if k.Email_Address==us:
+					print("mpike kai edw")
+					k.TextArticle = k.TextArticle.replace("[", "")
+					k.TextArticle = k.TextArticle.replace("]", "")
+					k.TextArticle = k.TextArticle.replace("'", "")
+					k.NameArticle = k.NameArticle.replace("[", "")
+					k.NameArticle = k.NameArticle.replace("]", "")
+					k.NameArticle = k.NameArticle.replace("'", "")
+					k.Current_date = k.Current_date.replace("[", "")
+					k.Current_date = k.Current_date.replace("]", "")
+					k.Current_date = k.Current_date.replace("'", "")
+					data.append(k.Email_Address)
+					data.append(k.NameArticle)
+					data.append(k.TextArticle)
+					data.append(k.Current_date)
+		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+class setLike(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		InterestUser=request.data['Email_Address']
+		Creator=request.data['Creator']
+		Name=request.data['Name']
+		Text=request.data['Text']
+		Date=request.data['Date']
+		val=-1
+		for k in Article.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			print(k.TextArticle)
+			if k.TextArticle!=None:
+				k.TextArticle = k.TextArticle.replace("[", "")
+				k.TextArticle = k.TextArticle.replace("]", "")
+				k.TextArticle = k.TextArticle.replace("'", "")
+			print(k.NameArticle)
+			if k.NameArticle!=None:
+				k.NameArticle = k.NameArticle.replace("[", "")
+				k.NameArticle = k.NameArticle.replace("]", "")
+				k.NameArticle = k.NameArticle.replace("'", "")
+			if k.Current_date!=None:
+				k.Current_date = k.Current_date.replace("[", "")
+				k.Current_date = k.Current_date.replace("]", "")
+				k.Current_date = k.Current_date.replace("'", "")
+			if k.Email_Address==Creator and k.NameArticle==Name and k.TextArticle==Text and k.Current_date==Date:
+				val=k.id
+				print("k=",k.NameArticle)
+				break
+		t = Article.objects.get(id=val)
+		t.InterestingUsers=str(t.InterestingUsers)+"-"+InterestUser
+		t.save()
+		return Response(status=status.HTTP_200_OK)
+
+
+
+class setComment(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		CommentUser=request.data['Email_Address']
+		Creator=request.data['Creator']
+		Name=request.data['Name']
+		Text=request.data['Text']
+		Date=request.data['Date']
+		val=-1
+		Comment=request.data['Comment']
+		for k in Article.objects.all():
+			k.Email_Address = k.Email_Address.replace("[", "")
+			k.Email_Address = k.Email_Address.replace("]", "")
+			k.Email_Address = k.Email_Address.replace("'", "")
+			print(k.TextArticle)
+			if k.TextArticle!=None:
+				k.TextArticle = k.TextArticle.replace("[", "")
+				k.TextArticle = k.TextArticle.replace("]", "")
+				k.TextArticle = k.TextArticle.replace("'", "")
+			print(k.NameArticle)
+			if k.NameArticle!=None:
+				k.NameArticle = k.NameArticle.replace("[", "")
+				k.NameArticle = k.NameArticle.replace("]", "")
+				k.NameArticle = k.NameArticle.replace("'", "")
+			if k.Current_date!=None:
+				k.Current_date = k.Current_date.replace("[", "")
+				k.Current_date = k.Current_date.replace("]", "")
+				k.Current_date = k.Current_date.replace("'", "")
+			if k.Email_Address==Creator and k.NameArticle==Name and k.TextArticle==Text and k.Current_date==Date:
+				val=k.id
+				print("k=",k.NameArticle)
+				break
+		t = Article.objects.get(id=val)
+		t.Comments=str(t.Comments)+"-"+Comment
+		t.CommentUsers=str(t.CommentUsers)+"-"+CommentUser
+		t.save()
+		return Response(status=status.HTTP_200_OK)

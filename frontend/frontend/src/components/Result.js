@@ -14,6 +14,7 @@ class Result  extends React.Component {
       id:-1,
       con:false,
       user_search:"",
+      id_result:"",
       check:'',
       isfriend:'',
       name:"Nothing",
@@ -31,6 +32,7 @@ class Result  extends React.Component {
     this.getData=this.getData.bind(this)
     this.getDataTwo=this.getDataTwo.bind(this)
     this.fun1=this.fun1.bind(this)
+    this.ReturnId=this.ReturnId.bind(this)
     this.fun2=this.fun2.bind(this)
     this.Send_Request=this.Send_Request.bind(this)
   }
@@ -66,6 +68,16 @@ class Result  extends React.Component {
     }).catch(error => {
       this.fun4()
     })
+  }
+  ReturnId(){
+    const formData=new FormData()
+    formData.append("Email_Address_Search",this.state.user_search)
+    axios.post('http://127.0.0.1:8000/users/ReturnId/',formData,{headers: {'Content-Type': 'application/json'}})
+    .then(response => {
+      this.setState({id_result:response.data})
+    }).catch(error => {
+      alert("Something went wrong")
+    })
     this.setState({name:"Other"})
   }
   Send_Request(){
@@ -81,7 +93,7 @@ class Result  extends React.Component {
     this.props.history.push({
          pathname: "/Network/:"+this.state.id,
          state :{
-           Email : this.state.email,
+           Email : this.state.email_address,
            id: this.state.id,
            page : "Network",
            isLogin: true
@@ -96,14 +108,20 @@ class Result  extends React.Component {
       if(this.state.name=="Nothing"){
         this.getData()
         this.getDataTwo()
+        this.ReturnId()
       }
+      alert(this.state.isfriend)
       if(this.state.check=="Exists"){
-        alert(this.state.isfriend)
         if(this.state.isfriend=="Yes"){
+          alert(this.state.id_result)
           return(
             <div>
               <h4>User Result</h4>
-              <p>{this.state.user_search}</p>
+              <Link
+              to={{
+              pathname: "/AllInfo/:"+this.state.id_result,
+              state: { email: this.state.user_search, id: this.state.id_result}
+            }}><p>{this.state.user_search}</p></Link>
             </div>
           );
         }

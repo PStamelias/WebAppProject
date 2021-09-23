@@ -52,6 +52,7 @@ class Article(models.Model):
 	Image         		 =  models.FileField(upload_to='article_images',blank=True,null=True)
 	InterestingUsers     =  models.TextField(null=True)
 	CommentUsers         =  models.TextField(null=True)
+	Comments             =  models.TextField(null=True)
 
 
 class Friend_Status(models.Model):

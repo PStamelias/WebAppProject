@@ -43,17 +43,16 @@ class PersonalInfo  extends React.Component {
       alert(this.state.email_address)
       axios.post('http://127.0.0.1:8000/users/GetAllInfo/',formData,{headers: {'Content-Type': 'application/json'}})
       .then(response => {
-         this.setState({email_address:response.data[0]});
-         this.setState({name:response.data[1]});
-         this.setState({surname:response.data[2]});
-         this.setState({Phone_Number:response.data[3]});
-         this.setState({Biography:response.data[4]});
-         this.setState({Professional_Experience:response.data[5]});
-         this.setState({Education:response.data[6]});
-         this.setState({Skills:response.data[7]});
-
+        this.setState({email_address:response.data[0]});
+        this.setState({name:response.data[1]});
+        this.setState({surname:response.data[2]});
+        this.setState({Phone_Number:response.data[3]});
+        this.setState({Biography:response.data[4]});
+        this.setState({Professional_Experience:response.data[5]});
+        this.setState({Education:response.data[6]});
+        this.setState({Skills:response.data[7]});
       }).catch(error => {
-          alert("Something went wrong")
+        alert("Something went wrong")
       })
     }
   	render() {

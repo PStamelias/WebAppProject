@@ -17,6 +17,10 @@ class Ads extends React.Component {
 	     	id:-1,
 	     	con:false,
 	     	name:"Nothing",
+	     	emailofadcreator:"",
+	     	textonsubmit:"",
+	     	nameonsubmit:"",
+	     	pos:-1,
 	     	dataFriends:[],
 	     	dataOthers:[],
 	    };
@@ -29,9 +33,11 @@ class Ads extends React.Component {
     		this.state.email_address=props.location.state.Email
     		this.state.id=props.location.state.id
     	}
-    	this.SubmitAd=this.SubmitAd.bind(this);
-    	this.CheckAds=this.CheckAds.bind(this);
-    	this.getData=this.getData.bind(this);
+    	this.handleChange=this.handleChange.bind(this)
+    	this.SendRequest=this.SendRequest.bind(this)
+    	this.SubmitAd=this.SubmitAd.bind(this)
+    	this.CheckAds=this.CheckAds.bind(this)
+    	this.getData=this.getData.bind(this)
    	}
    	SubmitAd(){
    		alert(this.state.email_address)
@@ -45,6 +51,20 @@ class Ads extends React.Component {
           isLogin: true
           }
        })
+   	}
+   	SendRequest(){
+   		const formData=new FormData()
+   		formData.append("Email_Address",this.state.emailofadcreator)
+   		formData.append("NameAD",this.state.nameonsubmit)
+   		formData.append("TextAD",this.state.textonsubmit)
+   		formData.append("ApplicationUser",this.state.email_address)
+   		axios.post('http://127.0.0.1:8000/users/SendReqAd/',formData,{headers: {'Content-Type': 'application/json'}})
+        .then(response => {
+        	alert("Requset sent Successfully")
+        }).catch(error => {
+            alert("Something went wrong")
+        })
+   		alert("mpika SendRequest")
    	}
    	CheckAds(){
 		alert(this.state.email_address)
@@ -76,6 +96,12 @@ class Ads extends React.Component {
         })
    		this.setState({name:"Other"});
    	}
+   	handleChange = param => e => {
+   		alert(param)
+   		this.setState({emailofadcreator:this.state.dataFriends[param]});
+   		this.setState({nameonsubmit:this.state.dataFriends[param+1]});
+   		this.setState({textonsubmit:this.state.dataFriends[param+2]});
+	};
    	render(){
   		if(this.state.con === false ){
   			return (<Redirect to='/'/>);
@@ -87,13 +113,29 @@ class Ads extends React.Component {
   			const AdsFr=[]
   			const AdsNotFr=[]
   			for (let i = 0; i < this.state.dataFriends.length;) {
-  				AdsFr.push(<p>Name of Ad:this.state.dataFriends[i]</p>)
-  				AdsFr.push(<p>Text of Ad:this.state.dataFriends[i+1]</p>)
-  				AdsFr.push(<p>ApplicationsUsers of Ad:this.state.dataFriends[i+2]</p>)
-  				AdsFr.push(<form><button>Make Request</button></form>)
-  				i=i+3
+  				AdsFr.push(
+  					<div class="MyMode">
+  					<p>Creator of Ad:{this.state.dataFriends[i]}</p>
+  					<p>Name of Ad:{this.state.dataFriends[i+1]}</p>
+  					<p>Text of Ad:{this.state.dataFriends[i+2]}</p>
+  					<p>ApplicationsUsers of Ad:{this.state.dataFriends[i+3]}</p>
+  					<form onSubmit={this.SendRequest}>
+  					<input type="submit" value="Send Request"  onClick={this.handleChange(i)}/>
+  					</form>
+  					</div>
+  				)
+  				i=i+4
   			}
-  			for (let i = 0; i < this.state.dataOthers.length; i++) {
+  			for (let i = 0; i < this.state.dataOthers.length;) {
+  				AdsNotFr.push(
+  					<div class="MyMode">
+  					<p>Creator of Ad:{this.state.dataOthers[i]}</p>
+  					<p>Name of Ad:{this.state.dataOthers[i+1]}</p>
+  					<p>Text of Ad:{this.state.dataOthers[i+2]}</p>
+  					<p>ApplicationsUsers of Ad:{this.state.dataOthers[i+3]}</p>
+  					</div>
+  				)
+  				i=i+4
   			}
 	  		return(
 	  			<div>
