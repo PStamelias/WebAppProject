@@ -29,7 +29,7 @@ class PersonalInfo  extends React.Component {
       else{
         alert("22222222222222222")
         this.state.con=true
-        this.state.email_address=props.location.state.email
+        this.state.email_address=props.location.state.Email
         this.state.id=props.location.state.id
         alert(this.state.email_address)
         alert(this.state.id)

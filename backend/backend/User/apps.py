@@ -32,3 +32,8 @@ class Friend_StatusConfig(AppConfig):
 
 class Friend_RequestConfig(AppConfig):
     name='Friend_Request'
+
+
+
+class DiscussionConfig(AppConfig):
+    name='Discussion'

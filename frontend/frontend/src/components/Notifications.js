@@ -152,6 +152,7 @@ class Notifications extends React.Component {
   			}
   			const items=[]
             const OtherData=[]
+            const Other=[]
   			for (let i = 0; i < this.state.LinkData.length-1;) {
   				items.push(<Link
 					  to={{
@@ -163,12 +164,38 @@ class Notifications extends React.Component {
 					 items.push(<br/>)
 				i=i+2
   			}
+            for(let i=0;i< this.state.Likes.length;){
+                OtherData.push(
+                    <div class="mymoe">
+                    <p>NameArticle:{this.state.Likes[i]}</p>
+                    <p>TextArticle:{this.state.Likes[i+1]}</p>
+                    <p>CurrentDate:{this.state.Likes[i+2]}</p>
+                    <p>Likes_from:{this.state.Likes[i+3]}</p>
+                    </div>
+                )
+                i=i+4
+            }
+            for(let i=0;i< this.state.Comments.length;){
+                Other.push(
+                    <div class="mymoe">
+                    <p>NameArticle:{this.state.Comments[i]}</p>
+                    <p>TextArticle:{this.state.Comments[i+1]}</p>
+                    <p>CurrentDate:{this.state.Comments[i+2]}</p>
+                    <p>Comments:</p>
+                    <p>{this.state.Comments[i+3]}-{this.state.Comments[i+4]}</p>
+                    </div>
+                )
+                i=i+5
+            }
 	   		return(
 	   			<div>
 	   				<Plot name={"Notifications"} id={this.state.id} email={this.state.email_address}/>
 	   				<h2>Connection_Requests</h2>
 	   				{items}
+                    <h3>Articles with Likes from Friends</h3>
                     {OtherData}
+                    <h3>Articles with Comments from Friends</h3>
+                    {Other}
 	   			</div>
 	   		);
    		}

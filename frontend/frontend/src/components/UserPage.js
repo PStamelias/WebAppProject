@@ -19,6 +19,7 @@ class UserPage  extends React.Component {
           nameArticle:"",
           Articles:[],
           FrArticles:[],
+          NotFrArticle:[],
       		Phone_Number: "",
       		Biography: "",
           Article:"",
@@ -35,6 +36,7 @@ class UserPage  extends React.Component {
     	}
     	this.getData = this.getData.bind(this);
       this.handleText=this.handleText.bind(this);
+      this.getNoFrArticles=this.getNoFrArticles.bind(this)
       this.SendArticle=this.SendArticle.bind(this);
       this.handleName=this.handleName.bind(this);
       this.getArticles=this.getArticles.bind(this);
@@ -134,7 +136,18 @@ class UserPage  extends React.Component {
       }).catch(error => {
         alert("Something went wrong")
       })
+      
+    }
+    getNoFrArticles(){
       this.setState({name:"Other"});
+      const formData=new FormData()
+      formData.append("Email_Address",this.state.email_address)
+      axios.post('http://127.0.0.1:8000/users/getNotFrArticles/',formData,{headers: {'Content-Type': 'application/json'}})
+      .then(response => {
+        this.setState({NotFrArticle:response.data["keywords"]});
+      }).catch(error => {
+        alert("Something went wrong")
+      })
     }
   	render() {
   		if(this.state.con === false){
@@ -145,6 +158,7 @@ class UserPage  extends React.Component {
   				this.getData()
           this.getArticles()
           this.getFriendsArticles()
+          this.getNoFrArticles()
   			}
         const items=[]
         for (let i = 0; i < this.state.Articles.length; ) {
@@ -176,6 +190,19 @@ class UserPage  extends React.Component {
           )
           i=i+4
         }
+        const NotFrArt=[]
+        for (let i = 0; i < this.state.NotFrArticle.length; ) {
+          NotFrArt.push(
+            <div class="mymoe">
+            <p>Creator:{this.state.NotFrArticle[i]}</p>
+            <p>ArticleName:{this.state.NotFrArticle[i+1]}</p>
+            <p>ArticleText:{this.state.NotFrArticle[i+2]}</p>
+            <p>ArticleDate:{this.state.NotFrArticle[i+3]}</p>
+            <p>UserLike:{this.state.NotFrArticle[i+4]}</p>
+            </div>
+          )
+          i=i+5
+        }
   			return(
           <div id="main">
           <Plot name={"Main_Page"} id={this.state.id} email={this.state.email_address}/>
@@ -185,6 +212,8 @@ class UserPage  extends React.Component {
           {items}
           <h3>Friends Articles</h3>
           {FrArt}
+          <h3>Articles that Likes to Friends</h3>
+          {NotFrArt}
           <form onSubmit={this.SendArticle}>
           <h4>Submit New Article</h4>
           <label>Name of Article:</label>

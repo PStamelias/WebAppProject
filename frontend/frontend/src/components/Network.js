@@ -74,13 +74,13 @@ class Network extends React.Component {
    					<Link
 					  to={{
 					    pathname: "/Discussions/:"+this.state.Usersdata[i+1],
-					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
+					    state: { Email: this.state.email_address, id: this.state.id,sender:this.state.Usersdata[i]}
 					  }}><p>Start Discussion</p></Link>
    					<br/>
    					<Link
 					  to={{
 					    pathname: "/PersonalInfo/:"+this.state.Usersdata[i+1],
-					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
+					    state: { Email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
 					  }}>{this.state.Usersdata[i+2]}</Link>,{this.state.Usersdata[i+3]}</div>)
    				i=i+4
    			}
