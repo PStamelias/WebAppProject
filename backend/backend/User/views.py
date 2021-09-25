@@ -1220,6 +1220,9 @@ class getNotFrArticles(APIView):
 class SendMessage(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
+		Email_Address1=request.data['Email_Address1']
+		Email_Address2=request.data['Email_Address2']
+		Content=request.data['Content']		
 		Disc1=DiscussionSerializer(data=request.data)
 		if Disc1.is_valid():
 			Disc1.save()

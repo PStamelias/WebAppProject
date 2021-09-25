@@ -70,7 +70,7 @@ class Friend_Request(models.Model):
 
 
 class Discussion(models.Model):
-	Email_Address1		=  models.EmailField(max_length=240)
-	Email_Address2		=  models.EmailField(max_length=240)
-	Content             =  models.TextField(max_length=240)
-	ID                  =  models.CharField(max_length=5,null=True)
+	Email_Address1		                    =  models.EmailField(max_length=240)
+	Email_Address2		                    =  models.EmailField(max_length=240)
+	Εmail_Field                             =  models.TextField(null=True)
+	Content_Discussion                      =  models.TextField(null=True)
