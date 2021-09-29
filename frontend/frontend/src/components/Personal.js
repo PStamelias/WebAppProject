@@ -20,16 +20,12 @@ class Personal  extends React.Component {
 			email:"",
 	   	};
 	   	if(props.location.state == null){
-	   		alert("here")
     		this.state.access="Empty"	
     	}
     	else{
     		this.state.access="Something"
-    		alert("edw")
     		this.state.email=props.location.state.Email
     		this.state.id=props.location.state.id
-    		alert(this.state.email)
-    		alert(this.state.id)
     	}
     	this.handle_Prof_Exp=this.handle_Prof_Exp.bind(this);
     	this.handle_Edu=this.handle_Edu.bind(this);
@@ -60,7 +56,6 @@ class Personal  extends React.Component {
   	handleSubmit(){
   		const formData = new FormData();
   		this.setState({myval:this.state.email});
-  		alert(this.state.email)
   		formData.append('Email_Address',this.state.email)
   		formData.append('Professional_Experience',this.state.Prof_Exp);
   		formData.append('Education',this.state.Edu);
@@ -71,12 +66,10 @@ class Personal  extends React.Component {
 	    axios.post('http://127.0.0.1:8000/users/Data_Send/', formData, {headers: {'Content-Type': 'application/json'}})
 	    .then(response => {
 	    	alert("Data Saved Successfully")
-	    	alert("Current email=",this.state.email)
 	    }).catch(error => {
 	        alert('Error:Something went wrong on data sending');
 	    }).finally(() => {
 	    })
-	    alert("Current email=",this.state.email)
 	    this.props.history.push({
           pathname:"/UserPage/:"+this.state.id,
           state :{

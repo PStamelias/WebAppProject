@@ -23,24 +23,18 @@ class PersonalInfo  extends React.Component {
       		con:false,
     	};
       if(props.location.state == null){
-        alert("edw1")
         this.state.con=false  
       }
       else{
-        alert("22222222222222222")
         this.state.con=true
         this.state.email_address=props.location.state.Email
         this.state.id=props.location.state.id
-        alert(this.state.email_address)
-        alert(this.state.id)
       }
       this.getData=this.getData.bind(this);
   	}
     getData(){
       const formData = new FormData();
       formData.append('Email_Address',this.state.email_address)
-      alert("kal")
-      alert(this.state.email_address)
       axios.post('http://127.0.0.1:8000/users/GetAllInfo/',formData,{headers: {'Content-Type': 'application/json'}})
       .then(response => {
         this.setState({email_address:response.data[0]});

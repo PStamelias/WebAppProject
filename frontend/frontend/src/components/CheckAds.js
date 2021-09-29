@@ -18,7 +18,6 @@ class NewAd extends React.Component {
 	     	con:false,
 	    };
 	    if(props.location.state == null){
-	    	alert("enter ston constructor")
     		this.state.con=false	
     	}
     	else{

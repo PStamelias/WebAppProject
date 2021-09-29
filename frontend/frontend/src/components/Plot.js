@@ -24,8 +24,6 @@ class Plot  extends React.Component {
 	    }
   	}
   	goNotifications = event =>{
-  		alert(this.props.id)
-  		alert(this.props.email)
   		this.props.history.push({
           pathname: "/Notifications/:"+this.props.id,
           state :{
@@ -37,9 +35,6 @@ class Plot  extends React.Component {
        })
   	} 
   	goDiscussions   = event =>{
-  		alert(this.props.id)
-  		alert(this.props.email)
-  		alert(this.state.email)
   		this.props.history.push({
           pathname: "/Discussions/:"+this.props.id,
           state :{
@@ -63,8 +58,6 @@ class Plot  extends React.Component {
        })
   	}
   	goSettings = event => {
-  		alert(this.props.id)
-  		alert(this.props.email)
   		this.props.history.push({
           pathname: "/Settings/:"+this.props.id,
           state :{
@@ -76,8 +69,6 @@ class Plot  extends React.Component {
        })
   	}
   	goNetWork = event =>{
-  		alert(this.props.id)
-  		alert(this.props.email)
   		this.props.history.push({
          pathname: "/Network/:"+this.props.id,
          state :{
@@ -89,10 +80,6 @@ class Plot  extends React.Component {
       })
   	}
   	goPersonal = event =>{
-  		alert(this.props.id)
-  		alert(this.props.email)
-  		alert(this.props.id)
-  		alert(this.props.email)
   		this.props.history.push({
           pathname: "/Personal/:"+this.state.id,
           state :{
@@ -104,8 +91,6 @@ class Plot  extends React.Component {
        })
   	}
   	goHome = event =>{
-  		alert(this.props.id)
-  		alert(this.props.email)
   		this.props.history.push({
           pathname: "/UserPage/:"+this.state.id,
           state :{

@@ -82,9 +82,9 @@ class Settings  extends React.Component {
 	    }).catch(error => {
 	        alert('Error:Something went wrong on changing Email');
 	    }).finally(() => { //Redirecting to the  page.
-	       alert(this.state.con)
+	     	
 	    })
-	    alert("email=",this.state.new_email_address)
+	    
 	    this.props.history.push({
           pathname:"/UserPage/:"+this.state.id,
           state :{
@@ -113,9 +113,7 @@ class Settings  extends React.Component {
 	    }).catch(error => {
 	        alert('Error:Something went wrong on changing Password');
 	    }).finally(() => { //Redirecting to the  page.
-	       alert(this.state.con)
 	       this.setState({access:"User"});
-	       alert(this.state.id)
 	    })
 	    this.props.history.push({
           pathname:"/UserPage/:"+this.state.id,

@@ -48,7 +48,6 @@ class UserPage  extends React.Component {
       this.setState({Comment: e.target.value});
     }
   	getData(){
-      alert("Enter on getData")
   		const formData = new FormData();
   		formData.append('email',this.state.email_address)
   		axios.post('http://127.0.0.1:8000/users/retrieve/', formData, {headers: {'Content-Type': 'application/json'}})
@@ -78,7 +77,6 @@ class UserPage  extends React.Component {
       formData.append("TextArticle",this.state.Article)
       formData.append("NameArticle",this.state.nameArticle)
       formData.append("Current_date",date)
-      alert("mpainw edw st sendarticle ")
       axios.post('http://127.0.0.1:8000/users/PostArticle/',formData,{headers: {'Content-Type': 'application/json'}})
       .then(response => {
         alert("Article posted Successfully")  
@@ -112,7 +110,6 @@ class UserPage  extends React.Component {
       })
     }
     Comment = (param1) => (event) => {
-      alert(param1)
       const formData=new FormData()
       formData.append("Email_Address",this.state.email_address)
       formData.append("Creator",this.state.FrArticles[param1])

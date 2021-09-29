@@ -25,7 +25,6 @@ class Ads extends React.Component {
 	     	dataOthers:[],
 	    };
 	    if(props.location.state == null){
-	    	alert("enter ston constructor")
     		this.state.con=false	
     	}
     	else{
@@ -40,8 +39,6 @@ class Ads extends React.Component {
     	this.getData=this.getData.bind(this)
    	}
    	SubmitAd(){
-   		alert(this.state.email_address)
-   		alert(this.state.id)
    		this.props.history.push({
           pathname: "/NewAd/",
           state :{
@@ -64,11 +61,8 @@ class Ads extends React.Component {
         }).catch(error => {
             alert("Something went wrong")
         })
-   		alert("mpika SendRequest")
    	}
    	CheckAds(){
-		alert(this.state.email_address)
-   		alert(this.state.id)
    		this.props.history.push({
           pathname: "/CheckAds/",
           state :{
@@ -97,7 +91,6 @@ class Ads extends React.Component {
    		this.setState({name:"Other"});
    	}
    	handleChange = param => e => {
-   		alert(param)
    		this.setState({emailofadcreator:this.state.dataFriends[param]});
    		this.setState({nameonsubmit:this.state.dataFriends[param+1]});
    		this.setState({textonsubmit:this.state.dataFriends[param+2]});

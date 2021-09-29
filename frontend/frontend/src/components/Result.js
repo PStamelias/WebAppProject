@@ -110,10 +110,8 @@ class Result  extends React.Component {
         this.getDataTwo()
         this.ReturnId()
       }
-      alert(this.state.isfriend)
       if(this.state.check=="Exists"){
         if(this.state.isfriend=="Yes"){
-          alert(this.state.id_result)
           return(
             <div>
               <h4>User Result</h4>

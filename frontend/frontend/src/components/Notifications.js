@@ -64,8 +64,6 @@ class Notifications extends React.Component {
         this.setState({name:"Other"});
     }
    	Accept(){
-   		alert("enter st Accept")
-   		alert(this.state.element)
    		const formData=new FormData()
    		formData.append("Email_Address_Receiver",this.state.email_address)
    		formData.append("Email_Address_Sender",this.state.element)
@@ -117,8 +115,6 @@ class Notifications extends React.Component {
       })
    	}
    	Reject(){
-   		alert("enter st reject")
-   		alert(this.state.element)
    		const formData=new FormData()
    		formData.append("Email_Address_Receiver",this.state.email_address)
    		formData.append("Email_Address_Sender",this.state.element)

@@ -41,8 +41,6 @@ class Discussions extends React.Component {
     	this.getUserswithMessages=this.getUserswithMessages.bind(this)
     }
     handleSubmit(){
-    	alert(this.state.email_address)
-    	alert(this.state.sender)
     	const formData=new FormData()
     	formData.append("Email_Address1",this.state.email_address)
     	formData.append("Email_Address2",this.state.sender)
@@ -85,8 +83,6 @@ class Discussions extends React.Component {
       	this.setState({name:"Other"});
     }
     Send(){
-    	alert(this.state.anyBoxesChecked)
-    	alert(this.state.UserMessages[this.state.anyBoxesChecked])
     	this.props.history.push({
           pathname:"/Discussions/:"+this.state.id,
           state :{

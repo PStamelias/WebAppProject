@@ -35,8 +35,6 @@ class Network extends React.Component {
    		this.setState({user_search:e.target.value})
    	}
    	Search(){
-   		alert(this.state.user_search)
-   		alert(this.state.email_address)
    		this.props.history.push({
           pathname: "/Result/:"+this.state.id,
           state :{
