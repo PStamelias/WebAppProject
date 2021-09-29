@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
+import json
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
-from User.models import user,UserInfo,AD,Connection_Request,Article,Friend_Status,Friend_Request
+from User.models import user,Discussion,UserInfo,AD,Connection_Request,Article,Friend_Status,Friend_Request
 from rest_framework.exceptions import AuthenticationFailed
-from User.serializers import UserSerializer,UserInfoSerializer,Friend_StatusSerializer,ADSerializer,ArticleSerializer,Friend_RequestSerializer
+from User.serializers import UserSerializer,UserInfoSerializer,DiscussionSerializer,Friend_StatusSerializer,ADSerializer,ArticleSerializer,Friend_RequestSerializer
 from django.core.exceptions import BadRequest
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -152,7 +153,6 @@ class Data_Send(APIView):
 				case=True
 				ide=p.id
 				break
-		print(case)
 		if case == True:
 			t = UserInfo.objects.get(id=ide)
 			if not request.data['Professional_Experience']: 
@@ -549,20 +549,14 @@ class AcceptRequestRoundTwo(APIView):
 		val=-1
 		Email_Address=request.data['Email_Address_Receiver']
 		Email_Address_Sender=request.data['Email_Address_Sender']
-		print("Sender=",Email_Address_Sender)
-		print("Receiver=",Email_Address)
 		for e in Friend_Status.objects.all():
-			print("two=",e.Email_Address)
-			print("one=",Email_Address)
 			e.Email_Address = e.Email_Address.replace("[", "")
 			e.Email_Address = e.Email_Address.replace("]", "")
 			e.Email_Address = e.Email_Address.replace("'", "")
 			if e.Email_Address==Email_Address:
 				val=e.id
 				break
-		print("val========================-",val)
 		t = Friend_Status.objects.get(id=val)
-		print("exei mesa o receeiver=",t.Friend_List)
 		t.Friend_List=str(t.Friend_List)+"-"+Email_Address_Sender
 		t.save()
 		return Response(status=status.HTTP_200_OK)
@@ -573,7 +567,6 @@ class AcceptRequestRoundTwo(APIView):
 class GetAdsFromFriends(APIView):
 	permission_classes=[AllowAny]
 	def post(self,request,format=None):
-		print("mama1")
 		data=[]
 		users=[]
 		mystring=""
@@ -593,8 +586,6 @@ class GetAdsFromFriends(APIView):
 				stringbuild=""
 			else:
 				stringbuild=stringbuild+mystring[k]
-		print("USERS")
-		print(users)
 		for us in users:
 			for k in AD.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
@@ -611,8 +602,6 @@ class GetAdsFromFriends(APIView):
 					k.TextAD = k.TextAD.replace("'", "")
 					data.append(k.TextAD)
 					data.append(k.ApplicationUsers)
-		print("data")
-		print(data)
 		return Response({"keywords":data})
 
 
@@ -621,7 +610,6 @@ class GetAdsFromFriends(APIView):
 class GetAdsFromOthers(APIView):
 	permission_classes=[AllowAny]
 	def post(self,request,format=None):
-		print("mama2")
 		data=[]
 		users=[]
 		mystring=""
@@ -643,13 +631,11 @@ class GetAdsFromOthers(APIView):
 				stringbuild=""
 			else:
 				stringbuild=stringbuild+mystring[k]
-		print("USERS edw")
 		if not users:
 			for k in AD.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
 				k.Email_Address = k.Email_Address.replace("'", "")
-				print("mpika")
 				data.append(k.Email_Address)
 				k.NameAD = k.NameAD.replace("[", "")
 				k.NameAD = k.NameAD.replace("]", "")
@@ -662,13 +648,11 @@ class GetAdsFromOthers(APIView):
 				data.append(k.ApplicationUsers)
 			return Response({"keywords":data})
 		for us in users:
-			print("kala")
 			for k in AD.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
 				k.Email_Address = k.Email_Address.replace("'", "")
 				if us!=k.Email_Address:
-					print("mpika")
 					data.append(k.Email_Address)
 					k.NameAD = k.NameAD.replace("[", "")
 					k.NameAD = k.NameAD.replace("]", "")
@@ -694,23 +678,17 @@ class GetFriends(APIView):
 		mystring=""
 		stringbuild=""
 		Email_Address=request.data['Email_Address']
-		print("psaxnw tous filous tou ",Email_Address)
 		for e in Friend_Status.objects.all():
 			e.Email_Address = e.Email_Address.replace("[", "")
 			e.Email_Address = e.Email_Address.replace("]", "")
 			e.Email_Address = e.Email_Address.replace("'", "")
 			if e.Email_Address==Email_Address:
 				mystring=e.Friend_List
-				print("mystring=",mystring)
 				break
 		if mystring==None:
-			print("mpika edwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
 			return Response({"keywords":data})
 		users = mystring.split('-')
-		print(users)
-		print("users=",users)
 		for us in users:
-			print("us=",us)
 			for k in user.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
@@ -734,18 +712,12 @@ class GetFriends(APIView):
 							e.Professional_Experience = e.Professional_Experience.replace("[", "")
 							e.Professional_Experience = e.Professional_Experience.replace("]", "")
 							e.Professional_Experience = e.Professional_Experience.replace("'", "")
-							print("prof")
-							print(e.Professional_Experience)
 							data.append(e.Professional_Experience)
 							e.Skills = e.Skills.replace("[", "")
 							e.Skills = e.Skills.replace("]", "")
 							e.Skills = e.Skills.replace("'", "")
-							print("skills")
-							print(e.Skills)
 							data.append(e.Skills)
 							break
-		print("data aggeliwn ")
-		print(data)
 		return Response({"keywords":data})
 
 
@@ -783,7 +755,6 @@ class GetAllInfoNonSecret(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
 		data=[]
-		print(request.data['Email_Address'])
 		for p in user.objects.all():
 			p.Email_Address = p.Email_Address.replace("[", "")
 			p.Email_Address = p.Email_Address.replace("]", "")
@@ -814,13 +785,10 @@ class GetAllInfoNonSecret(APIView):
 			p.Email_Address = p.Email_Address.replace("[", "")
 			p.Email_Address = p.Email_Address.replace("]", "")
 			p.Email_Address = p.Email_Address.replace("'", "")
-			print("p.email=",p.Email_Address)
-			print(request.data['Email_Address'])
 			if p.Email_Address==request.data['Email_Address']:
 				p.Professional_Experience = p.Professional_Experience.replace("[", "")
 				p.Professional_Experience = p.Professional_Experience.replace("]", "")
 				p.Professional_Experience = p.Professional_Experience.replace("'", "")
-				print("value on prof=",p.PrivateProf_Experience)
 				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("[", "")
 				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("]", "")
 				p.PrivateProf_Experience = p.PrivateProf_Experience.replace("'", "")
@@ -839,7 +807,6 @@ class GetAllInfoNonSecret(APIView):
 				p.PrivateSkills = p.PrivateSkills.replace("]", "")
 				p.PrivateSkills = p.PrivateSkills.replace("'", "")
 				data.append(p.Skills)
-		print(data)
 		return Response(data)
 
 
@@ -851,16 +818,11 @@ class GetAllInfoNonSecret(APIView):
 class SendReqAd(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
-		print("SendReqAd")
 		Email_Address=request.data['Email_Address']
 		NameAD=request.data['NameAD']
 		TextAD=request.data['TextAD']
 		ApplicationUser=request.data['ApplicationUser']
-		print(Email_Address)
-		print(NameAD)
 		val=-1
-		print(TextAD)
-		print(ApplicationUser)
 		for k in AD.objects.all():
 			k.Email_Address = k.Email_Address.replace("[", "")
 			k.Email_Address = k.Email_Address.replace("]", "")
@@ -884,12 +846,10 @@ class SendReqAd(APIView):
 class GetLikes(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
-		print("enter likes")
 		mystring=""
 		data=[]
 		users=[]
 		Email_Address=request.data['Email_Address']
-		print(Email_Address)
 		for k in Article.objects.all():
 			k.Email_Address = k.Email_Address.replace("[", "")
 			k.Email_Address = k.Email_Address.replace("]", "")
@@ -906,19 +866,14 @@ class GetLikes(APIView):
 				k.Current_date = k.Current_date.replace("[", "")
 				k.Current_date = k.Current_date.replace("]", "")
 				k.Current_date = k.Current_date.replace("'", "")
-			print("k.Email_Address=",k.Email_Address)
-			print("Email_Address=",Email_Address)
 			if k.Email_Address==Email_Address:
-				print("mpika edw----------------------------")
 				mystring=k.InterestingUsers
-				print(mystring)
 				if not mystring:
 					break
 				data.append(k.NameArticle)
 				data.append(k.TextArticle)
 				data.append(k.Current_date)
 				users = mystring.split('-')
-				print(users)
 				users = mystring.split('-')
 				new_string=""
 				enter=False
@@ -937,7 +892,6 @@ class GetLikes(APIView):
 class GetComments(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
-		print("enter comments")
 		data=[]
 		stringuser=""
 		users=[]
@@ -966,8 +920,6 @@ class GetComments(APIView):
 					return Response({"keywords":data})
 				users =   stringuser.split('-')
 				com   =   stringscom.split('-')
-				print("users =",users)
-				print("com===",com)
 				data.append(k.NameArticle)
 				data.append(k.TextArticle)
 				data.append(k.Current_date)
@@ -1003,31 +955,22 @@ class getFrArticles(APIView):
 		users=[]
 		mystring=""
 		Email_Address=request.data['Email_Address']
-		print("email pou psaxnw")
-		print(Email_Address)
 		for k in Friend_Status.objects.all():
 			k.Email_Address = k.Email_Address.replace("[", "")
 			k.Email_Address = k.Email_Address.replace("]", "")
 			k.Email_Address = k.Email_Address.replace("'", "")
 			if k.Email_Address==Email_Address:
-				print("mpika retetet")
 				mystring=k.Friend_List
 				break
-		print("eeee=",mystring)
 		if not mystring:
-			print("mpainei edw")
 			return Response({"keywords":data})
 		users =   mystring.split('-')
-		print("getFrArticles")
-		print("users")
-		print(users)
 		for us in users:
 			for k in Article.objects.all():
 				k.Email_Address = k.Email_Address.replace("[", "")
 				k.Email_Address = k.Email_Address.replace("]", "")
 				k.Email_Address = k.Email_Address.replace("'", "")
 				if k.Email_Address==us:
-					print("mpike kai edw")
 					k.TextArticle = k.TextArticle.replace("[", "")
 					k.TextArticle = k.TextArticle.replace("]", "")
 					k.TextArticle = k.TextArticle.replace("'", "")
@@ -1041,8 +984,6 @@ class getFrArticles(APIView):
 					data.append(k.NameArticle)
 					data.append(k.TextArticle)
 					data.append(k.Current_date)
-		print("data pou exw st FRarticles1111111111111111111111111111")
-		print(data)
 		return Response({"keywords":data})
 
 
@@ -1070,12 +1011,10 @@ class setLike(APIView):
 			k.Email_Address = k.Email_Address.replace("[", "")
 			k.Email_Address = k.Email_Address.replace("]", "")
 			k.Email_Address = k.Email_Address.replace("'", "")
-			print(k.TextArticle)
 			if k.TextArticle!=None:
 				k.TextArticle = k.TextArticle.replace("[", "")
 				k.TextArticle = k.TextArticle.replace("]", "")
 				k.TextArticle = k.TextArticle.replace("'", "")
-			print(k.NameArticle)
 			if k.NameArticle!=None:
 				k.NameArticle = k.NameArticle.replace("[", "")
 				k.NameArticle = k.NameArticle.replace("]", "")
@@ -1086,11 +1025,9 @@ class setLike(APIView):
 				k.Current_date = k.Current_date.replace("'", "")
 			if k.Email_Address==Creator and k.NameArticle==Name and k.TextArticle==Text and k.Current_date==Date:
 				val=k.id
-				print("--------------------------k=",k.NameArticle)
 				break
 		t = Article.objects.get(id=val)
 		t.InterestingUsers=str(t.InterestingUsers)+"-"+InterestUser
-		print("interest=",t.InterestingUsers)
 		t.save()
 		return Response(status=status.HTTP_200_OK)
 
@@ -1110,12 +1047,10 @@ class setComment(APIView):
 			k.Email_Address = k.Email_Address.replace("[", "")
 			k.Email_Address = k.Email_Address.replace("]", "")
 			k.Email_Address = k.Email_Address.replace("'", "")
-			print(k.TextArticle)
 			if k.TextArticle!=None:
 				k.TextArticle = k.TextArticle.replace("[", "")
 				k.TextArticle = k.TextArticle.replace("]", "")
 				k.TextArticle = k.TextArticle.replace("'", "")
-			print(k.NameArticle)
 			if k.NameArticle!=None:
 				k.NameArticle = k.NameArticle.replace("[", "")
 				k.NameArticle = k.NameArticle.replace("]", "")
@@ -1126,7 +1061,6 @@ class setComment(APIView):
 				k.Current_date = k.Current_date.replace("'", "")
 			if k.Email_Address==Creator and k.NameArticle==Name and k.TextArticle==Text and k.Current_date==Date:
 				val=k.id
-				print("k=",k.NameArticle)
 				break
 		t = Article.objects.get(id=val)
 		t.Comments=str(t.Comments)+"-"+Comment
@@ -1152,7 +1086,6 @@ class getNotFrArticles(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, format=None):
 		Email_Address=request.data['Email_Address']
-		print("GET NOT FR ARTICLES")
 		data=[]
 		mystring=""
 		for e in Friend_Status.objects.all():
@@ -1162,21 +1095,15 @@ class getNotFrArticles(APIView):
 			e.Email_Address = e.Email_Address.replace("'", "")
 			if e.Email_Address==Email_Address:
 				mystring=e.Friend_List
-				print("mystring=",mystring)
 				break
-		print("vgika")
 		if mystring==None:
-			print("mpika edwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
 			return Response({"keywords":data})
-		print("lalalsdaaaaaaaaaaaaaaaaaaaaaaa")
 		users = mystring.split('-')
-		print("filoi pou exw =",users)
 		for e in Article.objects.all():
 			new_string=e.InterestingUsers
 			if not new_string:
 				continue
 			users2=new_string.split('-')
-			print("user2222=",users2)
 			for us1 in users2:
 				for us2 in users:
 					if us1=="None" or us2=="None":
@@ -1185,9 +1112,6 @@ class getNotFrArticles(APIView):
 					e.Email_Address = e.Email_Address.replace("]", "")
 					e.Email_Address = e.Email_Address.replace("'", "")
 					if us2==us1 and e.Email_Address!=Email_Address:
-						print("us2=",us2)
-						print("us1=",us1)
-						print("e.Email_Address=",e.Email_Address)
 						e.TextArticle = e.TextArticle.replace("[", "")
 						e.TextArticle = e.TextArticle.replace("]", "")
 						e.TextArticle = e.TextArticle.replace("'", "")
@@ -1222,10 +1146,242 @@ class SendMessage(APIView):
 	def post(self, request, format=None):
 		Email_Address1=request.data['Email_Address1']
 		Email_Address2=request.data['Email_Address2']
-		Content=request.data['Content']		
+		found1=False
+		found2=False
+		for k in Discussion.objects.all():
+			k.Email_Address1 = k.Email_Address1.replace("[", "")
+			k.Email_Address1 = k.Email_Address1.replace("]", "")
+			k.Email_Address1 = k.Email_Address1.replace("'", "")
+			k.Email_Address2 = k.Email_Address2.replace("[", "")
+			k.Email_Address2 = k.Email_Address2.replace("]", "")
+			k.Email_Address2 = k.Email_Address2.replace("'", "")
+			if k.Email_Address1==Email_Address1 or k.Email_Address2==Email_Address1 and k.Email_Address1==Email_Address2 or k.Email_Address2==Email_Address2:
+				return Response(status=status.HTTP_200_OK) 
 		Disc1=DiscussionSerializer(data=request.data)
 		if Disc1.is_valid():
 			Disc1.save()
 		else:
 			raise ValidationError
+		return Response(status=status.HTTP_200_OK) 
+
+
+
+
+class SendMessageTwo(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Email_Address1=request.data['Email_Address1']
+		Email_Address2=request.data['Email_Address2']
+		Εmail_Field=request.data['Email_Address1']
+		Content=request.data['Content']
+		val=-1
+		for k in Discussion.objects.all():
+			k.Email_Address1 = k.Email_Address1.replace("[", "")
+			k.Email_Address1 = k.Email_Address1.replace("]", "")
+			k.Email_Address1 = k.Email_Address1.replace("'", "")
+			k.Email_Address2 = k.Email_Address2.replace("[", "")
+			k.Email_Address2 = k.Email_Address2.replace("]", "")
+			k.Email_Address2 = k.Email_Address2.replace("'", "")
+			if k.Email_Address1==Email_Address1 and k.Email_Address2==Email_Address2 or k.Email_Address1==Email_Address2 and k.Email_Address2==Email_Address1:
+				val=k.id
+		t = Discussion.objects.get(id=val)
+		t.Εmail_Field=str(t.Εmail_Field)+"-"+Εmail_Field
+		t.Content_Discussion=str(t.Content_Discussion)+"-"+Content
+		t.save()
+		return Response(status=status.HTTP_200_OK) 
+
+
+
+
+
+
+
+
+
+
+
+
+class getFriendswithMessages(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Email_Address=request.data['Email_Address']
+		data=[]
+		for e in Discussion.objects.all():
+			e.Email_Address1 = e.Email_Address1.replace("[", "")
+			e.Email_Address1 = e.Email_Address1.replace("]", "")
+			e.Email_Address1 = e.Email_Address1.replace("'", "")
+			e.Email_Address2 = e.Email_Address2.replace("[", "")
+			e.Email_Address2 = e.Email_Address2.replace("]", "")
+			e.Email_Address2 = e.Email_Address2.replace("'", "")
+			if Email_Address==e.Email_Address1:
+				data.append(e.Email_Address2)
+			if Email_Address==e.Email_Address2:
+				data.append(e.Email_Address1)
+		return Response({"keywords":data})
+
+
+
+
+class getFriendswithMessagesTwo(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Email_Address=request.data['Email_Address']
+		data=[]
+		string1=""
+		string2=""
+		for k in Discussion.objects.all():
+			k.Email_Address1 = k.Email_Address1.replace("[", "")
+			k.Email_Address1 = k.Email_Address1.replace("]", "")
+			k.Email_Address1 = k.Email_Address1.replace("'", "")
+			k.Email_Address2 = k.Email_Address2.replace("[", "")
+			k.Email_Address2 = k.Email_Address2.replace("]", "")
+			k.Email_Address2 = k.Email_Address2.replace("'", "")
+			if Email_Address==k.Email_Address1:
+				string1=k.Εmail_Field
+				string2=k.Content_Discussion
+			if Email_Address==k.Email_Address2:
+				string1=k.Εmail_Field
+				string2=k.Content_Discussion
+		user = string1.split('-')
+		messages = string2.split('-')
+		for i in range(0,len(user)):
+			if user[i]=="None":
+				continue
+			data.append(user[i])
+			data.append(messages[i])
+		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+
+
+
+
+class getConversation(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		data=[]
+		string1=""
+		string2=""
+		Email_Address1=request.data['Email_Address1']
+		Email_Address2=request.data['Email_Address2']
+		for k in Discussion.objects.all():
+			k.Email_Address1 = k.Email_Address1.replace("[", "")
+			k.Email_Address1 = k.Email_Address1.replace("]", "")
+			k.Email_Address1 = k.Email_Address1.replace("'", "")
+			k.Email_Address2 = k.Email_Address2.replace("[", "")
+			k.Email_Address2 = k.Email_Address2.replace("]", "")
+			k.Email_Address2 = k.Email_Address2.replace("'", "")
+			if k.Email_Address1==Email_Address1 or k.Email_Address2==Email_Address2 and k.Email_Address1==Email_Address2 or k.Email_Address2==Email_Address1:
+				string1=k.Εmail_Field
+				string2=k.Content_Discussion
+		user = string1.split('-')
+		messages = string2.split('-')
+		for i in range(0,len(user)):
+			if user[i]=="None":
+				continue
+			data.append(user[i])
+			data.append(messages[i])
+		return Response({"keywords":data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class DataOut(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, format=None):
+		Export_Data=request.data['ExportData']
+		Export_Data=Export_Data[1:]
+		Button=request.data['Button']
+		type_export=""
+		if Button=="1":
+			type_export="JSON"
+		if Button=="2":
+			type_export="XML"
+		string1=""
+		my_users = Export_Data.split(',')
+		data={}
+		if type_export=="JSON":
+			for k in my_users:
+				data={}
+				for l in user.objects.all():
+					l.Email_Address = l.Email_Address.replace("[", "")
+					l.Email_Address = l.Email_Address.replace("]", "")
+					l.Email_Address = l.Email_Address.replace("'", "")
+					if l.Email_Address==k:
+						data['Email_Address']=k
+						data['Biography']=l.Biography
+				for q in UserInfo.objects.all():
+					q.Email_Address = q.Email_Address.replace("[", "")
+					q.Email_Address = q.Email_Address.replace("]", "")
+					q.Email_Address = q.Email_Address.replace("'", "")
+					if q.Email_Address==k:
+						data['Professional_Experience']=q.Professional_Experience
+				for r in Article.objects.all():
+					r.Email_Address = r.Email_Address.replace("[", "")
+					r.Email_Address = r.Email_Address.replace("]", "")
+					r.Email_Address = r.Email_Address.replace("'", "")
+					if r.Email_Address==k:
+						data['NameArticle']=r.NameArticle
+						data['TextArticle']=r.TextArticle
+				for r in AD.objects.all():
+					r.Email_Address = r.Email_Address.replace("[", "")
+					r.Email_Address = r.Email_Address.replace("]", "")
+					r.Email_Address = r.Email_Address.replace("'", "")
+					if r.Email_Address==k:
+						data['NameAD']=r.NameAD
+						data['TextAD']=r.TextAD
+				for m in Friend_Status.objects.all():
+					m.Email_Address = m.Email_Address.replace("[", "")
+					m.Email_Address = m.Email_Address.replace("]", "")
+					m.Email_Address = m.Email_Address.replace("'", "")
+					if m.Email_Address==k:
+						data['Friends']=m.Friend_List[5:]
+				for n in Article.objects.all():
+					string2=n.InterestingUsers
+					if not string2:
+						continue
+					us22=string2.split('-')
+					for z in us22:
+						if z==k:
+							data['LikeNameArticle']=n.NameArticle
+							data['LikeTextArticle']=n.TextArticle
+					string2=n.CommentUsers
+					if not string2:
+						continue
+					us11=string2.split('-')
+					pos=0
+					for z in us11:
+						if z==k:
+							data['CommentNameArticle']=n.NameArticle
+							data['CommentTextArticle']=n.TextArticle
+							mydata=n.Comments
+							usssss=mydata.split('-')
+							coun=0
+							for x in usssss:
+								if coun==pos:
+									data['Comment']=x
+								coun=coun+1
+						pos=pos+1
+				with open('data.json', 'a', encoding='utf-8') as f:
+					json.dump(data,f,ensure_ascii=False,indent=4)
+		else:
+			print("XML")
 		return Response(status=status.HTTP_200_OK) 

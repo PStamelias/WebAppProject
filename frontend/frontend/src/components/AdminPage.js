@@ -46,6 +46,7 @@ class AdminPage  extends React.Component {
     SeenProf(e){
     	let isChecked = e.target.name;
     	this.setState({ ExportData: [this.state.ExportData, isChecked] })
+    	alert(this.state.ExportData)
     }
     SeenJson(){
     	this.setState({button:1});
@@ -56,6 +57,15 @@ class AdminPage  extends React.Component {
     handle(e){
     	alert(this.state.ExportData)
     	alert(this.state.button)
+    	const formData=new FormData()
+    	formData.append("ExportData",this.state.ExportData)
+    	formData.append("Button",this.state.button)
+    	axios.post('http://127.0.0.1:8000/users/DataOut/',formData,{headers: {'Content-Type': 'application/json'}})
+      	.then(response => {
+        	alert("Data Exported Successfully")
+      	}).catch(error => {
+        	alert("Something went wrong")
+      	})
     }
     render() {
     	if(this.state.con === false){
@@ -71,7 +81,7 @@ class AdminPage  extends React.Component {
 		  		items.push(<Link
 					  to={{
 					    pathname: "/PersonalInfo/:"+this.state.iddata[i],
-					    state: { email: this.state.Usersdata[i], id: this.state.iddata[i]}
+					    state: { Email: this.state.Usersdata[i], id: this.state.iddata[i]}
 					  }}>{this.state.Usersdata[i]}</Link>)
 					 items.push(<br/>)
 
