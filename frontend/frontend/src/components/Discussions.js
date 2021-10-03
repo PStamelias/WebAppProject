@@ -37,7 +37,6 @@ class Discussions extends React.Component {
     	this.setVal=this.setVal.bind(this)
     	this.Send=this.Send.bind(this)
     	this.handleActive=this.handleActive.bind(this)
-    	this.getOther=this.getOther.bind(this)
     	this.getUserswithMessages=this.getUserswithMessages.bind(this)
     }
     handleSubmit(){
@@ -61,6 +60,15 @@ class Discussions extends React.Component {
         }).catch(error => {
             alert("Something went wrong")
         })
+        this.props.history.push({
+          pathname:"/UserPage/:"+this.state.id,
+          state :{
+	        Email : this.state.email_address,
+	        id: this.state.id,
+	        page : "Main_Page",
+	        isLogin: true
+          }
+       })
     }
     setVal(e){
     	this.setState({Message:e.target.value})

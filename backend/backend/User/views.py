@@ -105,6 +105,212 @@ class Email_Change(APIView):
 		t = user.objects.get(id=ide)
 		t.Email_Address=New_Email
 		t.save()
+		ide=-1
+		for  p in UserInfo.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Current_Email:
+				ide=p.id
+				break
+		if ide!=-1:
+			t = UserInfo.objects.get(id=ide)
+			t.Email_Address=New_Email
+			t.save()
+		ide=-1
+		for p in Article.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Current_Email:
+				ide=p.id
+				t=Article.objects.get(id=ide)
+				t.Email_Address=New_Email
+				t.save()
+		ide=-1
+		for p in AD.objects.all():
+			p.Email_Address = p.Email_Address.replace("[", "")
+			p.Email_Address = p.Email_Address.replace("]", "")
+			p.Email_Address = p.Email_Address.replace("'", "")
+			if p.Email_Address==Current_Email:
+				ide=p.id
+				t=AD.objects.get(id=ide)
+				t.Email_Address=New_Email
+				t.save()
+		for t in Connection_Request.objects.all():
+			ide=-1
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("[", "")
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("]", "")
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("'", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("[", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("]", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("'", "")
+			if t.Email_Address_Sender==Current_Email:
+				ide=t.id
+				t=Connection_Request.objects.get(id=ide)
+				t.Email_Address_Sender=New_Email
+				t.save()
+			if t.Email_Address_Receiver==Current_Email:
+				ide=t.id
+				t=Connection_Request.objects.get(id=ide)
+				t.Email_Address_Receiver=New_Email
+				t.save()
+		for t in Friend_Request.objects.all():
+			ide=-1
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("[", "")
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("]", "")
+			t.Email_Address_Sender   = t.Email_Address_Sender.replace("'", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("[", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("]", "")
+			t.Email_Address_Receiver = t.Email_Address_Receiver.replace("'", "")
+			if t.Email_Address_Sender==Current_Email:
+				ide=t.id
+				t=Friend_Request.objects.get(id=ide)
+				t.Email_Address_Sender=New_Email
+				t.save()
+			if t.Email_Address_Receiver==Current_Email:
+				ide=t.id
+				t=Friend_Request.objects.get(id=ide)
+				t.Email_Address_Receiver=New_Email
+				t.save()
+		for p in AD.objects.all():
+			val=p.id
+			string1=p.ApplicationUsers
+			if not string1:
+				continue
+			userr = string1.split('-')
+			mystring=""
+			done=False
+			for us in userr:
+				if us==Current_Email:
+					done=True
+					break
+			if done==True:
+				for us in userr:
+					if us==Current_Email:
+						continue
+					mystring=mystring+"-"+us
+				mystring=mystring+"-"+New_Email
+				t=AD.objects.get(id=ide)
+				t.ApplicationUsers=mystring
+				t.save()
+		ide=-1
+		for k in Friend_Status.objects.all():
+			k.Email_Address   = k.Email_Address.replace("[", "")
+			k.Email_Address   = k.Email_Address.replace("]", "")
+			k.Email_Address   = k.Email_Address.replace("'", "")
+			if k.Email_Address==Current_Email:
+				ide=k.id
+				t=Friend_Status.objects.get(id=ide)
+				t.Email_Address=New_Email
+				t.save()
+		for k in Friend_Status.objects.all():
+			ide=k.id
+			mystring=""
+			string1=k.Friend_List
+			if not string1:
+				continue
+			userr = string1.split('-')
+			done=False
+			for us in userr:
+				if us==Current_Email:
+					done=True
+					break
+			if done==True:
+				for us in userr:
+					if us==Current_Email:
+						continue
+					mystring=mystring+"-"+us
+				mystring=mystring+"-"+New_Email
+				t=Friend_Status.objects.get(id=ide)
+				t.Friend_List=mystring
+				t.save()
+		for k in Article.objects.all():
+			mystring1=k.InterestingUsers
+			if not mystring1:
+				continue
+			userr = mystring1.split('-')
+			done=False
+			ide=k.id
+			mystring=""
+			for us in userr:
+				if us==Current_Email:
+					done=True
+					break
+			if done==True:
+				for us in userr:
+					if us==Current_Email:
+						continue
+					mystring=mystring+"-"+us
+				mystring=mystring+"-"+New_Email
+				t=Article.objects.get(id=ide)
+				t.InterestingUsers=mystring
+				t.save()
+		for k in Article.objects.all():
+			mystring1=k.CommentUsers
+			if not mystring1:
+				continue
+			Comments=k.Comments
+			userr = mystring1.split('-')
+			com=Comments.split('-')
+			done=False
+			ide=k.id
+			mystring=""
+			for us in userr:
+				if us==Current_Email:
+					done=True
+					break
+			if done==True:
+				mycomment=""
+				for i in range(0,len(userr)):
+					if userr[i]==Current_Email:
+						mycomment=com[i]
+						continue
+					mystring=mystring+"-"+userr[i]
+					mycomment=mycomment+"-"+com[i]
+				mystring=mystring+"-"+New_Email
+				mycomment=mycomment+"-"+mycomment
+				t=Article.objects.get(id=ide)
+				t.Comments=mycomment
+				t.CommentUsers=mystring
+				t.save()
+		for k in Discussion.objects.all():
+			val=k.id
+			k.Email_Address1   = k.Email_Address1.replace("[", "")
+			k.Email_Address1   = k.Email_Address1.replace("]", "")
+			k.Email_Address1   = k.Email_Address1.replace("'", "")
+			k.Email_Address2   = k.Email_Address2.replace("[", "")
+			k.Email_Address2   = k.Email_Address2.replace("]", "")
+			k.Email_Address2   = k.Email_Address2.replace("'", "")
+			if k.Email_Address1==Current_Email:
+				t=Discussion.objects.get(id=val)
+				t.Email_Address1=New_Email
+				t.save()
+			if k.Email_Address2==Current_Email:
+				t=Discussion.objects.get(id=val)
+				t.Email_Address2=New_Email
+				t.save()
+		for k in Discussion.objects.all():
+			val=k.id
+			mystring=k.Εmail_Field
+			if not mystring:
+				continue
+			userr = mystring.split('-')
+			done=False
+			for us in userr:
+				if us==Current_Email:
+					done=True
+					break
+			if done==True:
+				newstring=""
+				for us in userr:
+					if us==Current_Email:
+						newstring=newstring+"-"+New_Email
+					else:
+						newstring=newstring+"-"+us
+				t=Discussion.objects.get(id=val)
+				t.Εmail_Field=newstring
+				t.save()
 		return Response(status=status.HTTP_200_OK)
 
 
@@ -435,14 +641,7 @@ class CheckIfFriend(APIView):
 			if e.Email_Address==Email_Address:
 				mystring=e.Friend_List
 				break
-
-		for k in range(0,len(mystring)):
-			if mystring[k]=='-':
-				if stringbuild!="None":
-					users.append(stringbuild)
-				stringbuild=""
-			else:
-				stringbuild=stringbuild+mystring[k]
+		users=mystring.split('-')
 		for us in users:
 			if us==search_value:
 				done=True
@@ -545,7 +744,6 @@ class AcceptRequest(APIView):
 class AcceptRequestRoundTwo(APIView):
 	permission_classes=[AllowAny]
 	def post(self,request,format=None):
-		print("mama")
 		val=-1
 		Email_Address=request.data['Email_Address_Receiver']
 		Email_Address_Sender=request.data['Email_Address_Sender']
@@ -1242,6 +1440,8 @@ class getFriendswithMessagesTwo(APIView):
 			if Email_Address==k.Email_Address2:
 				string1=k.Εmail_Field
 				string2=k.Content_Discussion
+		if string1=="":
+			return Response({"keywords":data})
 		user = string1.split('-')
 		messages = string2.split('-')
 		for i in range(0,len(user)):

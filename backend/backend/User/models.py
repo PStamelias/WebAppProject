@@ -8,13 +8,13 @@ alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters a
 
 # Create your models here.
 class user(models.Model):
-	Name                    = models.CharField(max_length=240,null=True)
-	Surname       			= models.CharField(max_length=240,null=True)
+	Name                    = models.CharField(max_length=240)
+	Surname       			= models.CharField(max_length=240)
 	Email_Address 			= models.EmailField(max_length=240,unique=True)
-	Image         			= models.FileField(upload_to='user_images',blank=True,null=True)
-	Phone_Number  			= models.CharField(max_length=240,null=True)
+	Image         			= models.FileField(upload_to='user_images',blank=True)
+	Phone_Number  			= models.CharField(max_length=240)
 	Password          		= models.CharField(max_length=240,validators=[alphanumeric])
-	Biography     			= models.TextField(null=True)
+	Biography     			= models.TextField()
 
 
 
@@ -46,9 +46,9 @@ class Connection_Request(models.Model):
 
 class Article(models.Model):
 	Email_Address        =  models.EmailField(max_length=240)
-	TextArticle          =  models.TextField(null=True)
-	Current_date         =  models.TextField(null=True)
-	NameArticle          =  models.TextField(null=True)
+	TextArticle          =  models.TextField()
+	Current_date         =  models.TextField()
+	NameArticle          =  models.TextField()
 	Image         		 =  models.FileField(upload_to='article_images',blank=True,null=True)
 	InterestingUsers     =  models.TextField(null=True)
 	CommentUsers         =  models.TextField(null=True)

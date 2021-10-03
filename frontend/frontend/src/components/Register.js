@@ -10,6 +10,7 @@ class  Register extends React.Component{
       Surname: "",
       selectedFile: null,
       Phone: "",
+      Biography:"",
       Password: "",
       PasswordAgain: "",
       val1:true,
@@ -26,6 +27,10 @@ class  Register extends React.Component{
     this.doneee=this.doneee.bind(this);
     this.onFileUpload=this.onFileUpload.bind(this);
     this.fileData=this.fileData.bind(this);
+    this.handleBiography=this.handleBiography.bind(this);
+  }
+  handleBiography(e){
+    this.setState({Biography: e.target.value});
   }
   handleEmail(e) {
    this.setState({email: e.target.value});
@@ -203,6 +208,8 @@ class  Register extends React.Component{
       <input  type="password" id="Password" name="Password" defaultValue={this.state.Password} onChange={this.handlePassword} size="60"/><br/>
       <label>Password_Again:</label><br/>
       <input  type="password" id="Password_Again" name="Password_Again" defaultValue={this.state.PasswordAgain} onChange={this.handlePasswordAgain} size="60"/><br/>
+      <label>Biography:</label><br/>
+      <textarea id="Biography" name="Biography" defaultValue={this.state.Biography}  onChange={this.handleBiography} rows="10" cols="116"></textarea>
       <div>
             <label>Image</label><br/>
             <div>

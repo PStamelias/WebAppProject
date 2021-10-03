@@ -77,10 +77,10 @@ class Network extends React.Component {
    					<br/>
    					<Link
 					  to={{
-					    pathname: "/PersonalInfo/:"+this.state.Usersdata[i+1],
-					    state: { Email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
+					    pathname: "/AllInfo/:"+this.state.Usersdata[i+1],
+					    state: { email: this.state.Usersdata[i], id: this.state.Usersdata[i+1]}
 					  }}>{this.state.Usersdata[i+2]}</Link>,{this.state.Usersdata[i+3]}</div>)
-   				i=i+4
+   				i=i+6
    			}
    			return(
    				<div>

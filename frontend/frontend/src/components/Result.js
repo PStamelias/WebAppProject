@@ -62,6 +62,7 @@ class Result  extends React.Component {
     const formData=new FormData()
     formData.append("Email_Address_Search",this.state.user_search)
     formData.append("Email_Address",this.state.email_address)
+    alert("enter")
     axios.post('http://127.0.0.1:8000/users/CheckIfFriend/',formData,{headers: {'Content-Type': 'application/json'}})
     .then(response => {
       this.fun3()
@@ -119,7 +120,7 @@ class Result  extends React.Component {
               to={{
               pathname: "/AllInfo/:"+this.state.id_result,
               state: { email: this.state.user_search, id: this.state.id_result}
-            }}><p>{this.state.user_search}</p></Link>
+            }}>{this.state.user_search}</Link>
             </div>
           );
         }
@@ -127,7 +128,11 @@ class Result  extends React.Component {
           return(
             <div>
               <h4>User Result</h4>
-              <p>{this.state.user_search}</p>
+              <Link
+              to={{
+              pathname: "/PersonalInfo/:"+this.state.id_result,
+              state: { Email: this.state.user_search, id: this.state.id_result}
+              }}>{this.state.user_search}</Link>
               <div class="e">
               <form onSubmit={this.Send_Request}>
               <button>Send Request</button>

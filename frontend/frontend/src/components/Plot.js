@@ -29,7 +29,7 @@ class Plot  extends React.Component {
           state :{
           Email : this.props.email,
           id: this.props.id,
-          page : "Ads",
+          page : "Notifications",
           isLogin: true
           }
        })
@@ -40,13 +40,12 @@ class Plot  extends React.Component {
           state :{
           Email : this.props.email,
           id: this.props.id,
-          page : "Ads",
+          page : "Discussions",
           isLogin: true
           }
        })
   	}
   	goAds  = event =>{
-  		alert(this.props.id)
   		this.props.history.push({
           pathname: "/Ads/:"+this.props.id,
           state :{
@@ -96,7 +95,7 @@ class Plot  extends React.Component {
           state :{
           Email : this.props.email,
           id   :this.props.id,
-          page : "Main_Page",
+          page : "UserPage",
           isLogin: true
           }
        })

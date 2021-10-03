@@ -19,7 +19,6 @@ class AdminPage  extends React.Component {
     		this.state.con=false	
     	}
     	else{
-        	alert("2")
     		this.state.con=true
     	}
     	this.getData=this.getData.bind(this);
@@ -80,8 +79,8 @@ class AdminPage  extends React.Component {
 		  		items.push(<input type="checkbox" id={this.state.Usersdata[i]} name={this.state.Usersdata[i]} onChange={this.SeenProf}/>)
 		  		items.push(<Link
 					  to={{
-					    pathname: "/PersonalInfo/:"+this.state.iddata[i],
-					    state: { Email: this.state.Usersdata[i], id: this.state.iddata[i]}
+					    pathname: "/AllInfo/:"+this.state.iddata[i],
+					    state: { email: this.state.Usersdata[i], id: this.state.iddata[i]}
 					  }}>{this.state.Usersdata[i]}</Link>)
 					 items.push(<br/>)
 
